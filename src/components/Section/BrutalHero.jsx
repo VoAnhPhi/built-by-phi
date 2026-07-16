@@ -1,8 +1,16 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, {
+  lazy,
+  Suspense,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useContentReady } from "@/hooks/useContentReady";
-import ThreeScene from "./Three";
+
+const ThreeScene = lazy(() => import("./Three"));
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -38,6 +46,21 @@ export default function BrutalHero() {
   const heroRef = useRef(null);
   const isContentReady = useContentReady();
   const hasAnimatedRef = useRef(false);
+  const [shouldLoadThree, setShouldLoadThree] = useState(false);
+
+  useEffect(() => {
+    if (!isContentReady) return undefined;
+
+    if ("requestIdleCallback" in window) {
+      const idleId = window.requestIdleCallback(() => setShouldLoadThree(true), {
+        timeout: 700,
+      });
+      return () => window.cancelIdleCallback(idleId);
+    }
+
+    const timeoutId = window.setTimeout(() => setShouldLoadThree(true), 250);
+    return () => window.clearTimeout(timeoutId);
+  }, [isContentReady]);
 
   useLayoutEffect(() => {
     if (!heroRef.current || hasAnimatedRef.current) return undefined;
@@ -213,7 +236,7 @@ export default function BrutalHero() {
 
           <figure className="brutal-hero__portrait">
             <img
-              src="/img/main/voanhphi.jpg"
+              src="/img/main/voanhphi.webp"
               alt="Vo Anh Phi playing guitar"
               className="brutal-hero__portrait-image"
               loading="eager"
@@ -285,7 +308,11 @@ export default function BrutalHero() {
             Portfolio / 2026
           </span>
           <div className="brutal-hero__visual-inner">
-            <ThreeScene />
+            {shouldLoadThree && (
+              <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
+                <ThreeScene />
+              </Suspense>
+            )}
           </div>
 
           <div className="brutal-hero__scroll" aria-hidden="true">

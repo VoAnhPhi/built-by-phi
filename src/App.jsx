@@ -7,6 +7,13 @@ import PageTransition from "./components/Loading/PageTransition";
 import { ContentReadyProvider } from "./hooks/useContentReady";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+const INITIAL_ASSETS = [
+	"/img/icon/github-icon.svg",
+	"/img/icon/linkedin-icon.svg",
+	"/img/hero/cover.jpg",
+];
+const PRELOAD_CHUNKS = [];
+
 export default function App() {
 	const [phase, setPhase] = useState("loading");
 
@@ -54,15 +61,12 @@ export default function App() {
 			{phase === "loading" && (
 				<LoadingScreen
 					onComplete={handleLoadingDone}
-					assets={["/img/icon/github-icon.svg", "/img/icon/linkedin-icon.svg", "/img/hero/cover.jpg"]}
-					preloadChunks={[
-						() => import("@/components/Section/BrutalHero.jsx"),
-						() => import("@/components/Section/BrutalWorks.jsx")
-					]}
-					useFonts={true}
-					minVisibleMs={3000}
-					idleDurationMs={3000}
-					fadeOutMs={500}
+					assets={INITIAL_ASSETS}
+					preloadChunks={PRELOAD_CHUNKS}
+					useFonts={false}
+					minVisibleMs={900}
+					idleDurationMs={700}
+					fadeOutMs={250}
 				/>
 			)}
 

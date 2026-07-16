@@ -73,7 +73,7 @@ function SoftwareStackVisual() {
       <div className="brutal-about__stack-stage">
         <img
           className="brutal-about__stack-image"
-          src="/img/about/software-stack.png"
+          src="/img/about/software-stack.webp"
           alt=""
           loading="lazy"
           decoding="async"

@@ -21,12 +21,23 @@ export default function ThreeScene() {
 
 		const w = container.clientWidth || 300;
 		const h = container.clientHeight || 300;
+		const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const lowPowerDevice =
+			(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+			(navigator.deviceMemory && navigator.deviceMemory <= 4);
+		const pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1 : 1.5);
+		const sphereSegments = lowPowerDevice ? 48 : 72;
+		const targetFps = lowPowerDevice ? 24 : 45;
 
 		// Renderer
-		const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+		const renderer = new THREE.WebGLRenderer({
+			antialias: !lowPowerDevice,
+			alpha: true,
+			powerPreference: "default",
+		});
+		renderer.setPixelRatio(pixelRatio);
 		renderer.setSize(w, h);
-		renderer.shadowMap.enabled = true;
+		renderer.shadowMap.enabled = false;
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
 		renderer.toneMapping = THREE.ACESFilmicToneMapping;
 		renderer.toneMappingExposure = 1.0;
@@ -65,9 +76,7 @@ export default function ThreeScene() {
 		// Lights
 		const dirLight = new THREE.DirectionalLight(0xffffff, 1.25);
 		dirLight.color.setHex(0xfff7e6); // warm tint
-		dirLight.castShadow = true;
-		dirLight.shadow.mapSize.set(2048, 2048);
-		dirLight.shadow.bias = -0.0005;
+		dirLight.castShadow = false;
 		scene.add(dirLight);
 		dirLight.target.position.set(0, 0, 0);
 		scene.add(dirLight.target);
@@ -78,25 +87,6 @@ export default function ThreeScene() {
 		// Group
 		const group = new THREE.Group();
 		scene.add(group);
-
-		// Torus giữ tone sáng
-		const torusGeometry = new THREE.TorusGeometry(3.5, 0.45, 100, 100);
-		const ringMat = new THREE.MeshStandardMaterial({
-			color: PALETTE.primary,
-			emissive: PALETTE.primary,
-			emissiveIntensity: 0.12,
-			metalness: 0.3,
-			roughness: 0.35,
-		});
-		// const torus1 = new THREE.Mesh(torusGeometry, ringMat);
-		// torus1.rotation.x = Math.PI / 2;
-		// torus1.castShadow = torus1.receiveShadow = true;
-		// group.add(torus1);
-
-		// const torus2 = new THREE.Mesh(torusGeometry, ringMat);
-		// torus2.rotation.y = Math.PI / 2;
-		// torus2.castShadow = torus2.receiveShadow = true;
-		// group.add(torus2);
 
 		// ===== Procedural Noise GLASS SHELL (rỗng, trong suốt) + OUTLINE =====
 		const clock = new THREE.Clock();
@@ -155,7 +145,7 @@ export default function ThreeScene() {
 				depthWrite: true,
 			});
 
-		const sphereGeometry = new THREE.SphereGeometry(1.5, 192, 192);
+		const sphereGeometry = new THREE.SphereGeometry(1.5, sphereSegments, sphereSegments);
 
 		// Outer shell (FrontSide)
 		const outerMat = makeGlassMat();
@@ -185,8 +175,8 @@ export default function ThreeScene() {
 			outerMat.userData.shader = shader;
 		};
 		const outerShell = new THREE.Mesh(sphereGeometry, outerMat);
-		outerShell.castShadow = true;
-		outerShell.receiveShadow = true;
+		outerShell.castShadow = false;
+		outerShell.receiveShadow = false;
 		outerShell.renderOrder = 2;
 		group.add(outerShell);
 
@@ -268,8 +258,9 @@ export default function ThreeScene() {
 			x: "+=" + Math.PI * 2,
 			y: "+=" + Math.PI * 2,
 			duration: 18,
-			repeat: -1,
+			repeat: reduceMotion ? 0 : -1,
 			ease: "linear",
+			paused: reduceMotion,
 		});
 
 		// Hover
@@ -294,29 +285,55 @@ export default function ThreeScene() {
 			camera.aspect = nw / nh;
 			camera.updateProjectionMatrix();
 			renderer.setSize(nw, nh);
-			renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 		};
 		const ro = new ResizeObserver(onResize);
 		ro.observe(container);
 
-		// Loop
-		let rafId;
-		const animate = () => {
-			rafId = requestAnimationFrame(animate);
+		// Render only near the viewport and cap frame rate to protect weak GPUs.
+		let rafId = 0;
+		let lastFrame = 0;
+		let isInViewport = true;
+		const frameInterval = 1000 / targetFps;
+		const renderFrame = () => {
 			dirLight.position.copy(camera.position);
-
-			// update time cho noise (share cho outer, inner, outline)
 			noiseUniforms.uTime.value = clock.getElapsedTime();
-
 			controls.update();
 			renderer.render(scene, camera);
 		};
-		animate();
+		const animate = (time) => {
+			rafId = requestAnimationFrame(animate);
+			if (time - lastFrame < frameInterval) return;
+			lastFrame = time;
+			renderFrame();
+		};
+		const syncRenderLoop = () => {
+			const shouldRun = isInViewport && !document.hidden && !reduceMotion;
+			rotationTween.paused(!shouldRun);
+			if (shouldRun && !rafId) rafId = requestAnimationFrame(animate);
+			if (!shouldRun && rafId) {
+				cancelAnimationFrame(rafId);
+				rafId = 0;
+			}
+			if (reduceMotion) renderFrame();
+		};
+		const visibilityObserver = new IntersectionObserver(
+			([entry]) => {
+				isInViewport = entry.isIntersecting;
+				syncRenderLoop();
+			},
+			{ rootMargin: "120px" },
+		);
+		const handleVisibilityChange = () => syncRenderLoop();
+		visibilityObserver.observe(container);
+		document.addEventListener("visibilitychange", handleVisibilityChange);
+		syncRenderLoop();
 
 		// Cleanup
 		return () => {
 			cancelAnimationFrame(rafId);
 			rotationTween.kill();
+			visibilityObserver.disconnect();
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
 			container.removeEventListener("mouseenter", handleEnter);
 			container.removeEventListener("mouseleave", handleLeave);
 			ro.disconnect();

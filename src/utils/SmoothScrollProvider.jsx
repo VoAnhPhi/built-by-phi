@@ -18,6 +18,17 @@ export default function SmoothScrollProvider({ children }) {
         document.documentElement.style.setProperty("scroll-behavior", "auto", "important");
         document.body.style.setProperty("scroll-behavior", "auto", "important");
 
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const lowPowerDevice =
+            (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+            (navigator.deviceMemory && navigator.deviceMemory <= 4);
+
+        // Native scrolling is cheaper and more reliable on low-power hardware.
+        if (reduceMotion || lowPowerDevice) {
+            window.lenis = null;
+            return undefined;
+        }
+
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t) => 1 - Math.pow(1 - t, 3),
@@ -52,7 +63,6 @@ export default function SmoothScrollProvider({ children }) {
             lenis.raf(time * 1000);
         };
         gsap.ticker.add(rafCallback);
-        gsap.ticker.lagSmoothing(0); // Tắt lag smoothing để scroll mượt hơn
 
         // Cấu hình ScrollTrigger để sử dụng Lenis
         ScrollTrigger.scrollerProxy(document.body, {

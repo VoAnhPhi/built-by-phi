@@ -17,13 +17,6 @@ const preloadImages = (urls) => {
 };
 
 // Wait for fonts to be ready
-const waitForFonts = () => {
-    if (document.fonts && document.fonts.ready) {
-        return document.fonts.ready;
-    }
-    return Promise.resolve();
-};
-
 /**
  * phase: "loading" | "intro"
  * isFirstVisit: boolean - có phải lần đầu vào trang không
@@ -42,10 +35,10 @@ const FirstLoading = ({ phase, isFirstVisit, onDismiss }) => {
     const animationStartedRef = useRef(false);
 
     const config = {
-        wheelEventDelay: 2500,
-        iconGithubDelay: 0.5,
-        iconLinkedinDelay: 0.9,
-        textAnimationDelay: 2000,
+        wheelEventDelay: 1400,
+        iconGithubDelay: 0.15,
+        iconLinkedinDelay: 0.35,
+        textAnimationDelay: 900,
     };
 
     const addNoScroll = () => {
@@ -207,8 +200,8 @@ const FirstLoading = ({ phase, isFirstVisit, onDismiss }) => {
             "/img/icon/linkedin-icon.svg",
         ];
 
-        // Preload cả icons và fonts cùng lúc
-        Promise.all([preloadImages(iconUrls), waitForFonts()])
+        // The loading screen already preloads the two critical font faces.
+        Promise.all([preloadImages(iconUrls)])
             .then(() => {
                 setAssetsReady(true);
             })
