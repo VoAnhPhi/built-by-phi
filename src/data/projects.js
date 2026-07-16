@@ -2,7 +2,7 @@ export const PROJECT_DATA = {
   tomatohub: {
     id: 1,
     slug: "tomatohub",
-    index: "01",
+    index: "03",
     title: "TOMATOHUB",
     subtitle:
       "AI-assisted campaign platform với recommendation, priority scoring và transparency tracking.",
@@ -58,7 +58,7 @@ export const PROJECT_DATA = {
   sonaspace: {
     id: 2,
     slug: "sonaspace",
-    index: "02",
+    index: "01",
     title: "SONASPACE",
     subtitle:
       "A full-stack interior commerce platform connecting curated products, room inspiration, personalized shopping, and operational management.",
@@ -129,7 +129,7 @@ export const PROJECT_DATA = {
   "portfolio-v2": {
     id: 111,
     slug: "portfolio-v2",
-    index: "03",
+    index: "05",
     title: "PORTFOLIO V2",
     subtitle:
       "Personal portfolio với animation, performance focus và custom UI/UX.",
@@ -173,7 +173,7 @@ export const PROJECT_DATA = {
   "cinema-booking-system": {
     id: 3,
     slug: "cinema-booking-system",
-    index: "03",
+    index: "04",
     title: "CINEMA BOOKING SYSTEM",
     subtitle:
       "Website đặt vé phim với quản lý phim, suất chiếu và admin dashboard.",
@@ -207,7 +207,7 @@ export const PROJECT_DATA = {
   "interface-style-comparison": {
     id: 4,
     slug: "interface-style-comparison",
-    index: "04",
+    index: "02",
     title: "UI STYLE RESEARCH",
     subtitle:
       "Interactive research workspace for comparing UI/UX styles through live previews, design tokens, and use-case guidance.",

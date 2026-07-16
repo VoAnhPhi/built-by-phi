@@ -8,15 +8,6 @@ gsap.registerPlugin(ScrollTrigger);
 const PROJECTS = [
   {
     id: 1,
-    slug: "tomatohub",
-    title: "TOMATOHUB",
-    category: "AI PLATFORM",
-    year: "2026",
-    tech: ["NEXT.JS", "FASTAPI", "POSTGRESQL"],
-    image: "img/project/tomato/tomatohub.png",
-  },
-  {
-    id: 2,
     slug: "sonaspace",
     title: "SONASPACE",
     category: "INTERIOR E-COMMERCE",
@@ -25,17 +16,7 @@ const PROJECTS = [
     image: "/img/project/sonaspace/sonaspace-thumbnail-v2.png",
   },
   {
-    id: 3,
-    slug: "cinema-booking-system",
-    title: "CINEMA BOOKING SYSTEM",
-    category: "WEB APP",
-    year: "2024",
-    tech: ["REACT", "NODE.JS", "MONGODB"],
-    image:
-      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2670&auto=format&fit=crop",
-  },
-  {
-    id: 4,
+    id: 2,
     slug: "interface-style-comparison",
     title: "UI STYLE RESEARCH",
     category: "DESIGN RESEARCH TOOL",
@@ -43,6 +24,25 @@ const PROJECTS = [
     tech: ["REACT 19", "TYPESCRIPT", "VITE 6"],
     image:
       "/img/project/interface-style-comparison/interface-style-comparison-mockup.png",
+  },
+  {
+    id: 3,
+    slug: "tomatohub",
+    title: "TOMATOHUB",
+    category: "AI PLATFORM",
+    year: "2026",
+    tech: ["NEXT.JS", "FASTAPI", "POSTGRESQL"],
+    image: "img/project/tomato/tomatohub.png",
+  },
+  {
+    id: 4,
+    slug: "cinema-booking-system",
+    title: "CINEMA BOOKING SYSTEM",
+    category: "WEB APP",
+    year: "2024",
+    tech: ["REACT", "NODE.JS", "MONGODB"],
+    image:
+      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2670&auto=format&fit=crop",
   },
 ];
 
