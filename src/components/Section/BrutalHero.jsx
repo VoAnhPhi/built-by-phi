@@ -181,7 +181,7 @@ export default function BrutalHero() {
         <div className="brutal-hero__content">
           <div className="brutal-hero__intro">
             <p className="brutal-hero__eyebrow">
-              Frontend developer <span aria-hidden="true">·</span> Vietnam
+              Software Engineer <span aria-hidden="true">·</span> Vietnam
             </p>
 
             <div className="brutal-hero__name-wrapper">
