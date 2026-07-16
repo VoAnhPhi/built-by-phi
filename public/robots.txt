@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://built-by-phi.vercel.app/sitemap.xml

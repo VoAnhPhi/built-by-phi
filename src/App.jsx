@@ -8,9 +8,8 @@ import { ContentReadyProvider } from "./hooks/useContentReady";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const INITIAL_ASSETS = [
-	"/img/icon/github-icon.svg",
-	"/img/icon/linkedin-icon.svg",
-	"/img/hero/cover.jpg",
+	"/img/icon/github2.svg",
+	"/img/icon/link2.svg",
 ];
 const PRELOAD_CHUNKS = [];
 

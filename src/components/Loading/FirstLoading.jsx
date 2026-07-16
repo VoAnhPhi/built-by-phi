@@ -196,8 +196,8 @@ const FirstLoading = ({ phase, isFirstVisit, onDismiss }) => {
         }
 
         const iconUrls = [
-            "/img/icon/github-icon.svg",
-            "/img/icon/linkedin-icon.svg",
+            "/img/icon/github2.svg",
+            "/img/icon/link2.svg",
         ];
 
         // The loading screen already preloads the two critical font faces.

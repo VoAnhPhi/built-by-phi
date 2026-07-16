@@ -27,7 +27,7 @@ export default function ThreeScene() {
 			(navigator.deviceMemory && navigator.deviceMemory <= 4);
 		const pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1 : 1.5);
 		const sphereSegments = lowPowerDevice ? 48 : 72;
-		const targetFps = lowPowerDevice ? 24 : 45;
+		const targetFps = lowPowerDevice ? 32 : 45;
 
 		// Renderer
 		const renderer = new THREE.WebGLRenderer({

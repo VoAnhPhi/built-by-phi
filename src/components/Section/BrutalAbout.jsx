@@ -73,7 +73,11 @@ function SoftwareStackVisual() {
       <div className="brutal-about__stack-stage">
         <img
           className="brutal-about__stack-image"
-          src="/img/about/software-stack.webp"
+          src="/img/about/software-stack-800.webp"
+          srcSet="/img/about/software-stack-400.webp 400w, /img/about/software-stack-600.webp 600w, /img/about/software-stack-800.webp 800w, /img/about/software-stack.webp 1122w"
+          sizes="(max-width: 767px) 85vw, 50vw"
+          width="1122"
+          height="1402"
           alt=""
           loading="lazy"
           decoding="async"

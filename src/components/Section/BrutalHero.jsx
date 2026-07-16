@@ -236,7 +236,11 @@ export default function BrutalHero() {
 
           <figure className="brutal-hero__portrait">
             <img
-              src="/img/main/voanhphi.webp"
+              src="/img/main/voanhphi-640.webp"
+              srcSet="/img/main/voanhphi-320.webp 320w, /img/main/voanhphi-560.webp 560w, /img/main/voanhphi-640.webp 640w, /img/main/voanhphi.webp 1122w"
+              sizes="(max-width: 767px) 50vw, (max-width: 1199px) 40vw, 32vw"
+              width="1122"
+              height="1402"
               alt="Vo Anh Phi playing guitar"
               className="brutal-hero__portrait-image"
               loading="eager"
