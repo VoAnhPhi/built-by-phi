@@ -1,0 +1,108 @@
+// ============================================================
+// BRUTAL HOMEPAGE - Global page styles
+// ============================================================
+
+.homepage {
+  height: fit-content;
+}
+
+.brutal-homepage {
+  width: 100%;
+  min-height: 100vh;
+  background: $brutal-white;
+  overflow-x: clip;
+}
+
+.brutal-main {
+  width: 100%;
+  position: relative;
+}
+
+// ============================================================
+// GLOBAL BRUTAL UTILITIES
+// ============================================================
+
+// Text utilities
+.brutal-text-stroke {
+  color: transparent;
+  -webkit-text-stroke: 1px $brutal-black;
+}
+
+.brutal-text-stroke--white {
+  -webkit-text-stroke-color: $brutal-white;
+}
+
+.brutal-text-stroke--thick {
+  -webkit-text-stroke-width: 2px;
+}
+
+// Spacing utilities
+.brutal-mt-section {
+  margin-top: var(--brutal-offset);
+}
+
+.brutal-mb-section {
+  margin-bottom: var(--brutal-offset);
+}
+
+.brutal-pt-section {
+  padding-top: var(--brutal-offset);
+}
+
+.brutal-pb-section {
+  padding-bottom: var(--brutal-offset);
+}
+
+// Border utilities
+.brutal-border-top {
+  border-top: $brutal-border-thick;
+}
+
+.brutal-border-bottom {
+  border-bottom: $brutal-border-thick;
+}
+
+// Background utilities
+.brutal-bg-black {
+  background: $brutal-black;
+  color: $brutal-white;
+}
+
+.brutal-bg-white {
+  background: $brutal-white;
+  color: $brutal-black;
+}
+
+// Cursor styles
+.brutal-cursor {
+  cursor: none;
+}
+
+// Selection styling for brutal elements
+.brutal-homepage ::selection {
+  background: $brutal-red;
+  color: $brutal-white;
+}
+
+// Smooth scroll behavior handled by Lenis
+// html {
+//     scroll-behavior: smooth;
+// }
+
+// Focus styles for accessibility
+.brutal-homepage *:focus-visible {
+  outline: 2px solid $brutal-red;
+  outline-offset: 2px;
+}
+
+// Link reset for brutal aesthetic
+.brutal-homepage a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Button reset
+.brutal-homepage button {
+  font-family: inherit;
+  cursor: pointer;
+}

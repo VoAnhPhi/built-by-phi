@@ -1,0 +1,157 @@
+/* =============================
+   FOOTER — Minimal, Clear, Centered
+   Card giữa + corner-only border + glass blur
+   Breakpoints chỉ: xs (mobile) & xxs (small mobile)
+   ============================= */
+
+.footer {
+  position: relative;
+  margin-top: 96px; /* khoảng cách thoáng phía trên */
+  padding-bottom: 28px;
+}
+
+/* Card chính giữa */
+.footer__card {
+  position: relative;
+  margin: 0 auto;
+  max-width: min(1100px, 96vw);
+  background: rgba(182, 178, 163, 0.08);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
+  padding: 24px 22px;
+}
+
+/* Góc viền 4 góc */
+.footer__corners,
+.footer__corners::before,
+.footer__corners::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: 18px;
+}
+.footer__corners {
+  --corner-color: $highlight-cl-2;
+  --corner-size: 16px;
+  --corner-thickness: 2px;
+}
+.footer__corners::before,
+.footer__corners::after {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(var(--corner-color), var(--corner-color)) top left /
+      var(--corner-size) var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) top left / var(--corner-thickness)
+      var(--corner-size) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) top right / var(--corner-size)
+      var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) top right / var(--corner-thickness)
+      var(--corner-size) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom left / var(--corner-size)
+      var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom left / var(--corner-thickness)
+      var(--corner-size) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom right / var(--corner-size)
+      var(--corner-thickness) no-repeat,
+    linear-gradient(var(--corner-color), var(--corner-color)) bottom right / var(--corner-thickness)
+      var(--corner-size) no-repeat;
+}
+
+/* Top: flex 2 bên */
+.footer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* hai bên */
+  gap: 14px;
+}
+
+/* Brand trái */
+.footer__brand {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.footer__logo {
+  font-family: "Inter", sans-serif;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  font-size: 18px;
+  color: $highlight-cl-2;
+}
+
+.footer__tagline {
+  @include text(14px, B-vn-Regular, normal, $highlight-cl-2, null);
+  opacity: 0.85;
+}
+
+/* Actions phải (để trống cho bạn thêm nút sau) */
+.footer__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Bottom line */
+.footer__bottom {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  text-align: center;
+
+  p {
+    @include text(12px, B-vn-Regular, normal, $highlight-cl-2, null);
+    letter-spacing: 0.04em;
+    opacity: 0.9;
+  }
+}
+
+/* =============================
+   Responsive — chỉ mobile & mobile nhỏ
+   ============================= */
+
+/* Mobile <768px */
+@include xs {
+  .footer__card {
+    padding: 20px 16px;
+    max-width: min(680px, 94vw);
+  }
+
+  .footer__top {
+    gap: 10px;
+  }
+
+  .footer__logo {
+    font-size: 17px;
+  }
+  .footer__tagline {
+    font-size: 13px;
+  }
+
+  .footer__bottom p {
+    font-size: 11.5px;
+  }
+}
+
+/* Small Mobile <576px */
+@include xxs {
+  .footer__card {
+    padding: 18px 14px;
+    max-width: min(560px, 94vw);
+  }
+
+  .footer__logo {
+    font-size: 16px;
+  }
+  .footer__tagline {
+    font-size: 12.5px;
+  }
+  .footer__bottom p {
+    font-size: 11px;
+  }
+}

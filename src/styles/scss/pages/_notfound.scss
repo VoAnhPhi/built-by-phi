@@ -1,0 +1,90 @@
+@use "sass:color";
+
+.notfound {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	padding-top: var(--ptop);
+
+	&__content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 32px;
+	}
+
+	.nf__title {
+		@include text(120px, B-s-Bold, normal, $highlight-cl-2, uppercase);
+		letter-spacing: 4px;
+
+		@include sm {
+			font-size: 80px;
+		}
+
+		@include xs {
+			font-size: 56px;
+		}
+	}
+
+	.nf__subtitle {
+		max-width: 480px;
+		@include text(18px, B-vn-Light, 1.6, $secondary-cl, null);
+		opacity: 0.8;
+
+		@include xs {
+			font-size: 14px;
+		}
+	}
+
+	.nf__actions {
+		display: flex;
+		gap: 28px;
+
+		@include xs {
+			flex-direction: column;
+			gap: 16px;
+		}
+	}
+
+	.nf__btn,
+	.nf__btn-secondary {
+		padding: 12px 24px;
+		border-radius: 4px;
+		cursor: pointer;
+		position: relative;
+		transition: all 0.25s ease;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 14px;
+		font-family: B-vn-Medium;
+		letter-spacing: 1px;
+		text-decoration: none;
+	}
+
+	.nf__btn {
+		background-color: $highlight-cl-2;
+		color: $primary-cl;
+		border: 1px solid $highlight-cl-2;
+
+		&:hover {
+			transform: scale(1.05);
+			background-color: color.adjust($highlight-cl-2, $lightness: -5%);
+		}
+	}
+
+	.nf__btn-secondary {
+		background-color: transparent;
+		color: $highlight-cl-2;
+		border: 1px solid rgba($secondary-cl, 25%);
+
+		&:hover {
+			transform: scale(1.05);
+			border-color: $highlight-cl-2;
+			color: $highlight-cl-2;
+		}
+	}
+}

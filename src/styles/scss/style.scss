@@ -1,0 +1,35 @@
+// Core
+@import "core/reset";
+@import "core/variables";
+@import "core/mixins";
+@import "core/layouts";
+@import "core/fonts";
+@import "core/bootstrap_mini";
+
+// Components - Brutalist
+@import "components/brutal-header";
+@import "components/heading";
+@import "components/footer";
+
+// Sections - Brutalist (New)
+@import "sections/brutal-hero";
+@import "sections/brutal-about";
+@import "sections/brutal-manifesto";
+@import "sections/brutal-works";
+@import "sections/brutal-detail";
+@import "sections/trajectory";
+@import "sections/brutal-contact";
+
+// Legacy sections (kept for reference)
+@import "sections/portfolio";
+@import "sections/showcase";
+@import "sections/profile";
+
+// Pages
+@import "pages/homepage";
+@import "pages/showcase";
+@import "pages/notfound";
+
+// Editorial presentation layer. Kept last so it can refine the legacy
+// brutalist implementation without duplicating content or changing routes.
+@import "editorial-refactor";

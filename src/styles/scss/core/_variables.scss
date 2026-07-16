@@ -1,0 +1,867 @@
+//======================================================
+// BOXED LAYOUT
+//======================================================
+
+$container-max-width: 100%;
+
+//======================================================
+// GRID — DESKTOP-FIRST BREAKPOINTS
+//======================================================
+
+$xxl-min: 1660px; // Màn hình lớn, ví dụ màn hình 27"
+$lg-min: 1440px; // Desktop
+$md-min: 992px; // Laptop / tablet ngang
+$sm-min: 768px; // Tablet dọc
+$xs-min: 576px; // Mobile
+
+// Max-width tương ứng
+$xxl-max: $xxl-min - 1px;
+$lg-max: $lg-min - 1px;
+$md-max: $md-min - 1px;
+$sm-max: $sm-min - 1px;
+$xs-max: $xs-min - 1px;
+
+//======================================================
+// STATIC VARIABLES
+// Các biến không thay đổi theo responsive
+//======================================================
+
+//======================================================
+// CORE COLOR PALETTE
+//======================================================
+
+// Core canvas
+$primary-cl: #f5f3ec; // Warm editorial cream
+$secondary-cl: #101010; // Soft near-black
+
+// Primary brand accent
+$highlight-cl: #a83232; // Brick red
+$highlight-cl-2: #31558a; // Editorial blue
+
+// Existing neutral identity
+$neutral-cl: #506653; // Forest green
+
+//======================================================
+// EDITORIAL BRUTALIST PALETTE
+//======================================================
+
+// Base colors
+$brutal-black: #101010;
+$brutal-white: #f5f3ec;
+
+// Main accent colors
+$brutal-red: #a83232;
+$brutal-green: #506653;
+$brutal-blue: #31558a;
+$brutal-yellow: #d09a2d;
+$brutal-orange: #bd613c;
+$brutal-purple: #715c82;
+
+// Supporting colors
+$brutal-gray: #706d66;
+$brutal-gray-light: #d8d4ca;
+$brutal-border: $brutal-black;
+
+//======================================================
+// RED SCALE
+//======================================================
+
+$editorial-red-soft: #f0d1cd;
+$editorial-red-light: #d9948c;
+$editorial-red: #a83232;
+$editorial-red-dark: #70201f;
+$editorial-red-deep: #431211;
+
+//======================================================
+// GREEN SCALE
+//======================================================
+
+$editorial-green-soft: #dce4d9;
+$editorial-green-light: #aab8a4;
+$editorial-green: #506653;
+$editorial-green-dark: #2d4031;
+$editorial-green-deep: #17251b;
+
+//======================================================
+// BLUE SCALE
+//======================================================
+
+$editorial-blue-soft: #dce4ef;
+$editorial-blue-light: #9eb2d0;
+$editorial-blue: #31558a;
+$editorial-blue-dark: #1f365a;
+$editorial-blue-deep: #111f36;
+
+//======================================================
+// YELLOW SCALE
+//======================================================
+
+$editorial-yellow-soft: #f4e7bf;
+$editorial-yellow-light: #e7c77b;
+$editorial-yellow: #d09a2d;
+$editorial-yellow-dark: #82601d;
+$editorial-yellow-deep: #4a350d;
+
+//======================================================
+// ORANGE SCALE
+//======================================================
+
+$editorial-orange-soft: #f1d9cd;
+$editorial-orange-light: #dda38a;
+$editorial-orange: #bd613c;
+$editorial-orange-dark: #793a24;
+$editorial-orange-deep: #482114;
+
+//======================================================
+// PURPLE SCALE
+//======================================================
+
+$editorial-purple-soft: #e5dfe9;
+$editorial-purple-light: #b5a5c0;
+$editorial-purple: #715c82;
+$editorial-purple-dark: #463750;
+$editorial-purple-deep: #29202f;
+
+//======================================================
+// NEUTRAL SCALE
+//======================================================
+
+$neutral-000: #ffffff;
+$neutral-050: #faf9f5;
+$neutral-100: #f5f3ec;
+$neutral-150: #eeeae2;
+$neutral-200: #e7e3da;
+$neutral-300: #d8d4ca;
+$neutral-400: #aaa69d;
+$neutral-500: #817d75;
+$neutral-600: #625f59;
+$neutral-700: #46433f;
+$neutral-800: #292826;
+$neutral-900: #101010;
+
+//======================================================
+// SEMANTIC COLORS
+//======================================================
+
+// Canvas and surfaces
+$color-canvas: $neutral-100;
+$color-canvas-soft: $neutral-050;
+$color-surface: $neutral-000;
+$color-surface-muted: $neutral-200;
+$color-surface-elevated: $neutral-050;
+$color-surface-dark: $neutral-900;
+
+// Text
+$color-text: $neutral-900;
+$color-text-muted: $neutral-600;
+$color-text-subtle: $neutral-500;
+$color-text-disabled: $neutral-400;
+$color-text-inverse: $neutral-100;
+
+// Borders and dividers
+$color-border: $neutral-900;
+$color-border-muted: $neutral-300;
+$color-border-subtle: $neutral-200;
+$color-divider: $neutral-300;
+
+// Primary actions
+$color-action-primary: $editorial-red;
+$color-action-primary-hover: $editorial-red-dark;
+$color-action-primary-active: $editorial-red-deep;
+
+// Secondary actions
+$color-action-secondary: $editorial-blue;
+$color-action-secondary-hover: $editorial-blue-dark;
+$color-action-secondary-active: $editorial-blue-deep;
+
+// Focus
+$color-focus: $editorial-blue;
+$color-focus-offset: $color-canvas;
+
+// Feedback
+$color-success: $editorial-green;
+$color-success-soft: $editorial-green-soft;
+
+$color-warning: $editorial-yellow;
+$color-warning-soft: $editorial-yellow-soft;
+
+$color-danger: $editorial-red;
+$color-danger-soft: $editorial-red-soft;
+
+$color-info: $editorial-blue;
+$color-info-soft: $editorial-blue-soft;
+
+//======================================================
+// SECTION ACCENTS
+//======================================================
+
+// Mỗi section có một màu nhận diện,
+// nhưng chỉ nên sử dụng tiết chế cho label, index, line và hover.
+
+$color-hero: $editorial-red;
+$color-work: $editorial-blue;
+$color-about: $editorial-green;
+$color-experience: $editorial-orange;
+$color-skills: $editorial-yellow;
+$color-journal: $editorial-purple;
+$color-contact: $editorial-red;
+$color-highlight: $editorial-yellow;
+
+//======================================================
+// PROJECT COLOR PALETTE
+//======================================================
+
+// Có thể ánh xạ màu theo từng project,
+// category hoặc loại case study.
+
+$project-red-bg: $editorial-red-soft;
+$project-red-accent: $editorial-red;
+
+$project-green-bg: $editorial-green-soft;
+$project-green-accent: $editorial-green;
+
+$project-blue-bg: $editorial-blue-soft;
+$project-blue-accent: $editorial-blue;
+
+$project-yellow-bg: $editorial-yellow-soft;
+$project-yellow-accent: $editorial-yellow;
+
+$project-orange-bg: $editorial-orange-soft;
+$project-orange-accent: $editorial-orange;
+
+$project-purple-bg: $editorial-purple-soft;
+$project-purple-accent: $editorial-purple;
+
+//======================================================
+// SPACING
+//======================================================
+
+// Existing page spacing
+$pmobile: 16px;
+$ptablet: 50px;
+$ptop: 80px;
+$pbtm: 100px;
+
+// Brutalist spacing tokens
+$brutal-space-2xs: 4px;
+$brutal-space-xs: 8px;
+$brutal-space-sm: 16px;
+$brutal-space-md: 32px;
+$brutal-space-lg: 64px;
+$brutal-space-xl: 120px;
+$brutal-space-xxl: 200px;
+
+//======================================================
+// TIMING AND EASING
+//======================================================
+
+$t: 0.3s;
+
+$cubic: cubic-bezier(0.84, 0.13, 0.33, 0.97);
+
+$brutal-ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+$brutal-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+//======================================================
+// BORDERS
+//======================================================
+
+$brutal-border-thin: 1px solid $color-border;
+$brutal-border-thick: 3px solid $color-border;
+$brutal-border-heavy: 6px solid $color-border;
+
+$editorial-divider: 1px solid $color-divider;
+$editorial-border-muted: 1px solid $color-border-muted;
+
+//======================================================
+// RESPONSIVE CSS VARIABLES
+//======================================================
+
+:root {
+  //====================================================
+  // COLOR TOKENS
+  //====================================================
+
+  // Canvas and surfaces
+  --color-canvas: #{$color-canvas};
+  --color-canvas-soft: #{$color-canvas-soft};
+
+  --color-surface: #{$color-surface};
+  --color-surface-muted: #{$color-surface-muted};
+  --color-surface-elevated: #{$color-surface-elevated};
+  --color-surface-dark: #{$color-surface-dark};
+
+  // Text
+  --color-text: #{$color-text};
+  --color-text-muted: #{$color-text-muted};
+  --color-text-subtle: #{$color-text-subtle};
+  --color-text-disabled: #{$color-text-disabled};
+  --color-text-inverse: #{$color-text-inverse};
+
+  // Border
+  --color-border: #{$color-border};
+  --color-border-muted: #{$color-border-muted};
+  --color-border-subtle: #{$color-border-subtle};
+  --color-divider: #{$color-divider};
+
+  // Brand accents
+  --color-accent: #{$editorial-red};
+  --color-accent-hover: #{$editorial-red-dark};
+  --color-accent-active: #{$editorial-red-deep};
+
+  // Base accent colors
+  --color-red: #{$editorial-red};
+  --color-green: #{$editorial-green};
+  --color-blue: #{$editorial-blue};
+  --color-yellow: #{$editorial-yellow};
+  --color-orange: #{$editorial-orange};
+  --color-purple: #{$editorial-purple};
+
+  // Soft accent colors
+  --color-red-soft: #{$editorial-red-soft};
+  --color-green-soft: #{$editorial-green-soft};
+  --color-blue-soft: #{$editorial-blue-soft};
+  --color-yellow-soft: #{$editorial-yellow-soft};
+  --color-orange-soft: #{$editorial-orange-soft};
+  --color-purple-soft: #{$editorial-purple-soft};
+
+  // Light accent colors
+  --color-red-light: #{$editorial-red-light};
+  --color-green-light: #{$editorial-green-light};
+  --color-blue-light: #{$editorial-blue-light};
+  --color-yellow-light: #{$editorial-yellow-light};
+  --color-orange-light: #{$editorial-orange-light};
+  --color-purple-light: #{$editorial-purple-light};
+
+  // Dark accent colors
+  --color-red-dark: #{$editorial-red-dark};
+  --color-green-dark: #{$editorial-green-dark};
+  --color-blue-dark: #{$editorial-blue-dark};
+  --color-yellow-dark: #{$editorial-yellow-dark};
+  --color-orange-dark: #{$editorial-orange-dark};
+  --color-purple-dark: #{$editorial-purple-dark};
+
+  // Actions
+  --color-action-primary: #{$color-action-primary};
+  --color-action-primary-hover: #{$color-action-primary-hover};
+  --color-action-primary-active: #{$color-action-primary-active};
+
+  --color-action-secondary: #{$color-action-secondary};
+  --color-action-secondary-hover: #{$color-action-secondary-hover};
+  --color-action-secondary-active: #{$color-action-secondary-active};
+
+  // Focus
+  --color-focus: #{$color-focus};
+  --color-focus-offset: #{$color-focus-offset};
+
+  // Feedback
+  --color-success: #{$color-success};
+  --color-success-soft: #{$color-success-soft};
+
+  --color-warning: #{$color-warning};
+  --color-warning-soft: #{$color-warning-soft};
+
+  --color-danger: #{$color-danger};
+  --color-danger-soft: #{$color-danger-soft};
+
+  --color-info: #{$color-info};
+  --color-info-soft: #{$color-info-soft};
+
+  //====================================================
+  // SECTION ACCENTS
+  //====================================================
+
+  --color-hero: #{$color-hero};
+  --color-work: #{$color-work};
+  --color-about: #{$color-about};
+  --color-experience: #{$color-experience};
+  --color-skills: #{$color-skills};
+  --color-journal: #{$color-journal};
+  --color-contact: #{$color-contact};
+  --color-highlight: #{$color-highlight};
+
+  //====================================================
+  // PROJECT COLORS
+  //====================================================
+
+  --project-red-bg: #{$project-red-bg};
+  --project-red-accent: #{$project-red-accent};
+
+  --project-green-bg: #{$project-green-bg};
+  --project-green-accent: #{$project-green-accent};
+
+  --project-blue-bg: #{$project-blue-bg};
+  --project-blue-accent: #{$project-blue-accent};
+
+  --project-yellow-bg: #{$project-yellow-bg};
+  --project-yellow-accent: #{$project-yellow-accent};
+
+  --project-orange-bg: #{$project-orange-bg};
+  --project-orange-accent: #{$project-orange-accent};
+
+  --project-purple-bg: #{$project-purple-bg};
+  --project-purple-accent: #{$project-purple-accent};
+
+  //====================================================
+  // TYPOGRAPHY SCALE
+  //====================================================
+
+  // Display — Hero text
+  --display-fs: 18rem;
+  --display-lh: 0.85;
+  --display-ls: -0.055em;
+
+  // H1 — Section headers
+  --h1-fs: 12rem;
+  --h1-lh: 0.9;
+  --h1-ls: -0.045em;
+
+  // H2 — Subsection headers
+  --h2-fs: 6rem;
+  --h2-lh: 1;
+  --h2-ls: -0.035em;
+
+  // H3 — Project and card titles
+  --h3-fs: 3.6rem;
+  --h3-lh: 1.1;
+  --h3-ls: -0.025em;
+
+  // H4 — Labels and smaller headings
+  --h4-fs: 2.4rem;
+  --h4-lh: 1.2;
+  --h4-ls: -0.015em;
+
+  // H5 — Small labels
+  --h5-fs: 1.8rem;
+  --h5-lh: 1.3;
+  --h5-ls: -0.01em;
+
+  // Body text
+  --body16-fs: 1.6rem;
+  --body16-lh: 1.6;
+
+  --body14-fs: 1.4rem;
+  --body14-lh: 1.5;
+
+  // Brutalist-specific typography
+  --brutal-mono-fs: 1.4rem;
+  --brutal-label-fs: 1.2rem;
+
+  --brutal-giant-fs: 25rem;
+  --brutal-giant-lh: 0.6;
+  --brutal-giant-ls: -0.06em;
+
+  //====================================================
+  // LAYOUT TOKENS
+  //====================================================
+
+  --container-max-width: #{$container-max-width};
+
+  --gap: 80px;
+
+  --height-header: 80px;
+  --height-button: 56px;
+
+  --ptop: 0;
+  --pd-section: 0;
+
+  // Brutalist grid
+  --brutal-gutter: 24px;
+  --brutal-margin: 48px;
+  --brutal-offset: 120px;
+
+  // Editorial grid
+  --editorial-max-width: 1440px;
+  --editorial-wide-width: 1660px;
+  --editorial-reading-width: 68ch;
+  --editorial-copy-width: 58ch;
+  --editorial-narrow-width: 42ch;
+
+  // Section spacing
+  --space-section: clamp(7rem, 11vw, 16rem);
+  --space-section-small: clamp(4rem, 7vw, 9rem);
+  --space-section-large: clamp(9rem, 14vw, 20rem);
+
+  //====================================================
+  // SPACING TOKENS
+  //====================================================
+
+  --space-2xs: #{$brutal-space-2xs};
+  --space-xs: #{$brutal-space-xs};
+  --space-sm: #{$brutal-space-sm};
+  --space-md: #{$brutal-space-md};
+  --space-lg: #{$brutal-space-lg};
+  --space-xl: #{$brutal-space-xl};
+  --space-xxl: #{$brutal-space-xxl};
+
+  //====================================================
+  // BORDER TOKENS
+  //====================================================
+
+  --border-width-thin: 1px;
+  --border-width-thick: 3px;
+  --border-width-heavy: 6px;
+
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  //====================================================
+  // MOTION TOKENS
+  //====================================================
+
+  --motion-fast: 160ms;
+  --motion-base: 220ms;
+  --motion-slow: 500ms;
+
+  --ease-default: #{$cubic};
+  --ease-brutal: #{$brutal-ease};
+  --ease-out: #{$brutal-ease-out};
+
+  //====================================================
+  // RESPONSIVE BREAKPOINTS
+  //====================================================
+
+  @media (max-width: $xxl-max) {
+    --display-fs: 14rem;
+    --h1-fs: 10rem;
+
+    --gap: 60px;
+
+    --brutal-offset: 80px;
+    --editorial-max-width: 1320px;
+
+    --space-section: clamp(7rem, 10vw, 14rem);
+  }
+
+  @media (max-width: $lg-max) {
+    --display-fs: 11rem;
+    --h1-fs: 8rem;
+    --h2-fs: 5rem;
+
+    --gap: 48px;
+
+    --brutal-margin: 32px;
+    --brutal-offset: 60px;
+
+    --editorial-max-width: 1200px;
+    --editorial-reading-width: 65ch;
+
+    --space-section: clamp(6rem, 9vw, 12rem);
+  }
+
+  @media (max-width: $md-max) {
+    --display-fs: 8rem;
+    --display-lh: 0.9;
+
+    --h1-fs: 6rem;
+    --h2-fs: 4rem;
+    --h3-fs: 2.8rem;
+
+    --gap: 32px;
+
+    --brutal-margin: 24px;
+    --brutal-offset: 40px;
+
+    --editorial-max-width: 100%;
+    --editorial-reading-width: 62ch;
+    --editorial-copy-width: 55ch;
+
+    --space-section: clamp(5rem, 9vw, 9rem);
+  }
+
+  @media (max-width: $sm-max) {
+    --display-fs: 5.5rem;
+    --display-lh: 0.95;
+    --display-ls: -0.045em;
+
+    --h1-fs: 4.5rem;
+    --h1-lh: 0.95;
+
+    --h2-fs: 3rem;
+    --h3-fs: 2.4rem;
+
+    --gap: 24px;
+
+    --brutal-gutter: 16px;
+    --brutal-margin: 16px;
+    --brutal-offset: 24px;
+
+    --editorial-reading-width: 100%;
+    --editorial-copy-width: 100%;
+    --editorial-narrow-width: 100%;
+
+    --space-section: clamp(4.5rem, 12vw, 7rem);
+    --space-section-small: clamp(3rem, 9vw, 5rem);
+    --space-section-large: clamp(6rem, 16vw, 9rem);
+  }
+
+  @media (max-width: $xs-max) {
+    --display-fs: 4rem;
+    --display-lh: 0.98;
+    --display-ls: -0.04em;
+
+    --h1-fs: 3.6rem;
+    --h1-lh: 1;
+
+    --h2-fs: 2.6rem;
+    --h3-fs: 2rem;
+    --h4-fs: 1.8rem;
+
+    --body16-fs: 1.6rem;
+    --body14-fs: 1.4rem;
+
+    --gap: 16px;
+
+    --brutal-gutter: 12px;
+    --brutal-margin: 12px;
+    --brutal-offset: 16px;
+
+    --height-header: 60px;
+    --height-button: 48px;
+
+    --space-section: clamp(4rem, 14vw, 6rem);
+    --space-section-small: clamp(2.5rem, 10vw, 4rem);
+    --space-section-large: clamp(5rem, 18vw, 8rem);
+  }
+}
+
+//======================================================
+// OPTIONAL GLOBAL COLOR UTILITIES
+// Có thể giữ ở file variables hoặc chuyển sang utilities.scss
+//======================================================
+
+.section {
+  --section-accent: var(--color-accent);
+  --section-accent-soft: var(--color-red-soft);
+}
+
+.hero-section {
+  --section-accent: var(--color-hero);
+  --section-accent-soft: var(--color-red-soft);
+}
+
+.work-section {
+  --section-accent: var(--color-work);
+  --section-accent-soft: var(--color-blue-soft);
+}
+
+.about-section {
+  --section-accent: var(--color-about);
+  --section-accent-soft: var(--color-green-soft);
+}
+
+.experience-section {
+  --section-accent: var(--color-experience);
+  --section-accent-soft: var(--color-orange-soft);
+}
+
+.skills-section {
+  --section-accent: var(--color-skills);
+  --section-accent-soft: var(--color-yellow-soft);
+}
+
+.journal-section {
+  --section-accent: var(--color-journal);
+  --section-accent-soft: var(--color-purple-soft);
+}
+
+.contact-section {
+  --section-accent: var(--color-contact);
+  --section-accent-soft: var(--color-red-soft);
+}
+
+//======================================================
+// SHARED EDITORIAL TREATMENTS
+//======================================================
+
+.section-label,
+.section-index,
+.editorial-accent {
+  color: var(--section-accent, var(--color-accent));
+}
+
+.section-divider {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--color-divider);
+}
+
+.section-divider--accent {
+  border-color: var(--section-accent, var(--color-border));
+}
+
+.editorial-surface {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.editorial-surface--muted {
+  background-color: var(--color-surface-muted);
+  color: var(--color-text);
+}
+
+.editorial-surface--accent {
+  background-color: var(
+    --section-accent-soft,
+    var(--color-surface-muted)
+  );
+
+  color: var(--color-text);
+}
+
+.editorial-surface--dark {
+  background-color: var(--color-surface-dark);
+  color: var(--color-text-inverse);
+}
+
+//======================================================
+// PROJECT COLOR MODIFIERS
+//======================================================
+
+.project--red {
+  --project-background: var(--project-red-bg);
+  --project-accent: var(--project-red-accent);
+}
+
+.project--green {
+  --project-background: var(--project-green-bg);
+  --project-accent: var(--project-green-accent);
+}
+
+.project--blue {
+  --project-background: var(--project-blue-bg);
+  --project-accent: var(--project-blue-accent);
+}
+
+.project--yellow {
+  --project-background: var(--project-yellow-bg);
+  --project-accent: var(--project-yellow-accent);
+}
+
+.project--orange {
+  --project-background: var(--project-orange-bg);
+  --project-accent: var(--project-orange-accent);
+}
+
+.project--purple {
+  --project-background: var(--project-purple-bg);
+  --project-accent: var(--project-purple-accent);
+}
+
+.project-surface {
+  background-color: var(
+    --project-background,
+    var(--color-surface-muted)
+  );
+
+  color: var(--color-text);
+}
+
+.project-label,
+.project-index,
+.project-link {
+  color: var(
+    --project-accent,
+    var(--color-accent)
+  );
+}
+
+//======================================================
+// INTERACTION STATES
+//======================================================
+
+.editorial-link {
+  color: inherit;
+  text-decoration-color: var(
+    --section-accent,
+    var(--color-accent)
+  );
+
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+
+  transition:
+    color var(--motion-base) var(--ease-out),
+    text-decoration-color var(--motion-base) var(--ease-out);
+
+  &:hover {
+    color: var(
+      --section-accent,
+      var(--color-accent)
+    );
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+}
+
+.editorial-button {
+  min-height: var(--height-button);
+
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-none);
+
+  background-color: transparent;
+  color: var(--color-text);
+
+  transition:
+    background-color var(--motion-base) var(--ease-out),
+    color var(--motion-base) var(--ease-out),
+    border-color var(--motion-base) var(--ease-out);
+
+  &:hover {
+    border-color: var(
+      --section-accent,
+      var(--color-action-primary)
+    );
+
+    background-color: var(
+      --section-accent,
+      var(--color-action-primary)
+    );
+
+    color: var(--color-text-inverse);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 4px;
+  }
+}
+
+.editorial-button--primary {
+  border-color: var(--color-action-primary);
+  background-color: var(--color-action-primary);
+  color: var(--color-text-inverse);
+
+  &:hover {
+    border-color: var(--color-action-primary-hover);
+    background-color: var(--color-action-primary-hover);
+  }
+
+  &:active {
+    border-color: var(--color-action-primary-active);
+    background-color: var(--color-action-primary-active);
+  }
+}
+
+//======================================================
+// REDUCED MOTION
+//======================================================
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
