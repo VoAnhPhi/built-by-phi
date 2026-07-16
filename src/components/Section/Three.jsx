@@ -25,19 +25,19 @@ export default function ThreeScene() {
 		const lowPowerDevice =
 			(navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
 			(navigator.deviceMemory && navigator.deviceMemory <= 4);
-		const pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1 : 1.5);
-		const sphereSegments = lowPowerDevice ? 48 : 72;
-		const targetFps = lowPowerDevice ? 32 : 45;
+		const pixelRatio = Math.min(window.devicePixelRatio || 1, lowPowerDevice ? 1.25 : 1.75);
+		const sphereSegments = lowPowerDevice ? 72 : 128;
+		const targetFps = lowPowerDevice ? 30 : 60;
 
 		// Renderer
 		const renderer = new THREE.WebGLRenderer({
-			antialias: !lowPowerDevice,
+			antialias: true,
 			alpha: true,
-			powerPreference: "default",
+			powerPreference: lowPowerDevice ? "default" : "high-performance",
 		});
 		renderer.setPixelRatio(pixelRatio);
 		renderer.setSize(w, h);
-		renderer.shadowMap.enabled = false;
+		renderer.shadowMap.enabled = !lowPowerDevice;
 		renderer.outputColorSpace = THREE.SRGBColorSpace;
 		renderer.toneMapping = THREE.ACESFilmicToneMapping;
 		renderer.toneMappingExposure = 1.0;
@@ -76,7 +76,11 @@ export default function ThreeScene() {
 		// Lights
 		const dirLight = new THREE.DirectionalLight(0xffffff, 1.25);
 		dirLight.color.setHex(0xfff7e6); // warm tint
-		dirLight.castShadow = false;
+		dirLight.castShadow = !lowPowerDevice;
+		if (!lowPowerDevice) {
+			dirLight.shadow.mapSize.set(1024, 1024);
+			dirLight.shadow.bias = -0.0005;
+		}
 		scene.add(dirLight);
 		dirLight.target.position.set(0, 0, 0);
 		scene.add(dirLight.target);
@@ -175,8 +179,8 @@ export default function ThreeScene() {
 			outerMat.userData.shader = shader;
 		};
 		const outerShell = new THREE.Mesh(sphereGeometry, outerMat);
-		outerShell.castShadow = false;
-		outerShell.receiveShadow = false;
+		outerShell.castShadow = !lowPowerDevice;
+		outerShell.receiveShadow = !lowPowerDevice;
 		outerShell.renderOrder = 2;
 		group.add(outerShell);
 
