@@ -1,0 +1,178 @@
+.contact {
+	margin-top: 100px;
+	padding: 100px 0;
+	background-color: $primary-cl;
+
+	.contact__status {
+		@include text(14px, B-vn-Regular, 1.5, $highlight-cl, normal);
+		margin-top: 6px;
+	}
+
+	&__content {
+		display: flex;
+		gap: 4rem;
+		background-color: transparent;
+		box-shadow: none;
+		padding: 0;
+	}
+
+	&__left {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	&__title {
+		@include text(48px, B-s-SemiBold, 1, $secondary-cl, uppercase);
+		margin-bottom: 15px;
+	}
+
+	&__description {
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		margin-bottom: 30px;
+	}
+
+	&__cta {
+		border: 1px solid $secondary-cl;
+		border-radius: 12px;
+		padding: 15px;
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+		margin-top: auto;
+	}
+
+	&__cta-title {
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		margin-bottom: 15px;
+	}
+
+	&__cta-text {
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		margin-bottom: 15px;
+	}
+
+	&__cta-button {
+		width: 100%;
+		padding: 12px 24px;
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		background-color: $highlight-cl;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+
+		&:hover {
+			background-color: $secondary-cl;
+			color: $highlight-cl;
+		}
+	}
+
+	&__right {
+		flex: 1;
+	}
+
+	&__form-group {
+		margin-bottom: 24px;
+
+		&--checkbox {
+			display: flex;
+			align-items: center;
+			margin: 12px 0;
+		}
+	}
+
+	&__label {
+		display: block;
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		margin-bottom: 8px;
+	}
+
+	&__input,
+	&__textarea,
+	&__select {
+		width: 100%;
+		padding: 12px 12px;
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		border: 1px solid $secondary-cl;
+		background-color: $primary-cl;
+		border-radius: 4px;
+		transition:
+			border-color 0.3s ease,
+			box-shadow 0.3s ease;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+
+		&::placeholder {
+			@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		}
+
+		&:focus {
+			outline: none;
+			// border-color: $highlight-cl;
+			background-color: $primary-cl;
+		}
+	}
+
+	&__select {
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+		background-repeat: no-repeat;
+		background-position: right 12px center;
+		background-size: 12px;
+	}
+
+	&__textarea {
+		resize: vertical;
+		min-height: 120px;
+		padding: 12px 12px;
+	}
+
+	&__checkbox {
+		margin-right: 12px;
+		width: 20px;
+		height: 20px;
+		accent-color: $highlight-cl;
+	}
+
+	&__label--checkbox {
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+	}
+
+	&__button {
+		width: auto;
+		padding: 12px 24px;
+		@include text(16px, B-vn-Regular, 1.5, $secondary-cl, normal);
+		background-color: $highlight-cl;
+		border: none;
+		border-radius: 4px;
+		cursor: pointer;
+		transition: background-color 0.3s ease;
+		align-self: flex-start;
+
+		&:hover {
+			background-color: $secondary-cl;
+			color: $highlight-cl;
+		}
+
+		&:disabled {
+			background-color: $secondary-cl;
+			cursor: not-allowed;
+		}
+	}
+}
+
+@media (max-width: 992px) {
+	.contact__content {
+		flex-direction: column;
+		gap: 3rem;
+	}
+}
+
+@media (max-width: 768px) {
+	.contact {
+		padding: 60px 0;
+	}
+
+	.contact__title {
+		font-size: 32px;
+	}
+}

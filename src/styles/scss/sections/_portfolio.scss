@@ -1,0 +1,359 @@
+/* Ẩn thanh cuộn trên Chrome, Safari */
+::-webkit-scrollbar {
+	width: 8px;
+	/* Độ rộng của thanh cuộn */
+}
+
+/* Màu nền thanh cuộn */
+::-webkit-scrollbar-track {
+	background: $primary-cl;
+	border-radius: 10px;
+	background: transparent;
+}
+
+/* Màu phần kéo (thanh cuộn) */
+::-webkit-scrollbar-thumb {
+	background: $highlight-cl;
+	border-radius: 10px;
+}
+
+/* Hiệu ứng hover vào thanh cuộn */
+::-webkit-scrollbar-thumb:hover {
+	background: $highlight-cl;
+}
+
+/* Ẩn scrollbar khi đang loading */
+html.no-scroll::-webkit-scrollbar,
+body.no-scroll::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}
+
+html.no-scroll,
+body.no-scroll {
+	overflow: hidden !important;
+	scrollbar-width: none !important; /* Firefox */
+	-ms-overflow-style: none !important; /* IE and Edge */
+	// Không dùng position: fixed vì sẽ phá vỡ Lenis
+}
+
+body {
+	overflow-x: hidden;
+
+	&.no-scroll {
+		height: 100vh;
+		overflow: hidden;
+	}
+}
+
+.body-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	background: rgba(253, 251, 246, 0.8); //same fdfbf0
+	z-index: 10001;
+	pointer-events: all;
+}
+
+.loading-screen {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: $primary-cl;
+	z-index: 10009;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	transition:
+		opacity 0.5s ease-out,
+		visibility 0.5s ease-out;
+
+	.loading-logo {
+		@include text(36px, B-s-Bold, normal, $secondary-cl, uppercase);
+		margin-bottom: 30px;
+		letter-spacing: 3px;
+	}
+
+	.loading-container {
+		width: 200px;
+		height: 5px;
+		background-color: rgba(255, 255, 255, 0.8);
+		border-radius: 10px;
+		overflow: hidden;
+		margin-bottom: 20px;
+		position: relative;
+
+		.loading-bar {
+			height: 100%;
+			width: 0%;
+			background-color: #d5ceb3;
+			border-radius: 10px;
+			transition: width 0.3s ease-out;
+		}
+	}
+
+	.loading-text {
+		@include text(16px, B-vn-Medium, normal, $secondary-cl, null);
+		letter-spacing: 0.5px;
+		margin-top: 10px;
+	}
+}
+
+.first_loading {
+	@include size(100%, 100vh);
+	display: flex;
+	background-color: $primary-cl;
+	align-items: center;
+	position: fixed;
+	top: 0;
+	left: 0;
+	transform: translateY(0) translateZ(0); // Force GPU layer
+	pointer-events: all;
+	z-index: 10001;
+	backface-visibility: hidden; // Prevent flickering
+	-webkit-backface-visibility: hidden;
+
+	&-content {
+		height: 100vh;
+		@include mid(true);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		user-select: none;
+
+		&-icon {
+			display: flex;
+			gap: 48px;
+			position: relative;
+
+			a {
+				position: relative;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				will-change: transform, opacity; // Hint browser for animation
+				transform: translateZ(0); // Force GPU layer
+				backface-visibility: hidden;
+				-webkit-backface-visibility: hidden;
+
+				&::before {
+					content: "";
+					position: absolute;
+					width: 64px;
+					height: 64px;
+					background: linear-gradient(
+						to bottom right,
+						rgba(213, 206, 179, 0.1) 5%,
+						rgba(213, 206, 179, 0.15) 20%,
+						rgba(213, 206, 179, 0.2) 40%,
+						rgba(213, 206, 179, 0.25) 60%,
+						rgba(213, 206, 179, 0.3) 80%
+					);
+					border-radius: 12px;
+					z-index: 0;
+					transition: all 0.3s linear;
+				}
+
+				&:hover::before {
+					background: linear-gradient(
+						to bottom right,
+						rgba(213, 206, 179, 0.1) 5%,
+						rgba(213, 206, 179, 0.15) 20%,
+						rgba(213, 206, 179, 0.2) 40%,
+						rgba(213, 206, 179, 0.25) 60%,
+						rgba(213, 206, 179, 0.4) 80%
+					);
+					transform: scale(1.05);
+				}
+
+				img {
+					width: 48px;
+					height: 48px;
+					position: relative;
+					transition: all 0.3s ease;
+					will-change: transform;
+					transform: translateZ(0);
+				}
+
+				&:hover img {
+					transform: scale(1.05);
+				}
+			}
+		}
+
+		&-text {
+			margin-top: 24px;
+			text-align: center;
+			will-change: transform, opacity;
+
+			h1 {
+				@include text(96px, B-s-Bold, normal, $secondary-cl, uppercase);
+				transform: translateZ(0);
+				backface-visibility: hidden;
+			}
+
+			span {
+				display: block;
+				@include text(96px, B-s-Bold, normal, $secondary-cl, uppercase);
+				transform: translateZ(0);
+				backface-visibility: hidden;
+			}
+		}
+	}
+}
+
+@include lg {
+	.first_loading {
+		&-content {
+			&-text {
+				h1,
+				span {
+					font-size: 84px;
+				}
+			}
+		}
+	}
+}
+
+@include md {
+	.loading-screen {
+		.loading-logo {
+			font-size: 32px;
+		}
+
+		.loading-container {
+			width: 180px;
+		}
+
+		.loading-text {
+			font-size: 14px;
+		}
+	}
+
+	.first_loading {
+		&-content {
+			&-icon {
+				gap: 36px;
+
+				a {
+					&::before {
+						width: 56px;
+						height: 56px;
+					}
+
+					img {
+						width: 40px;
+						height: 40px;
+					}
+				}
+			}
+
+			&-text {
+				h1,
+				span {
+					font-size: 70px;
+				}
+			}
+		}
+	}
+}
+
+@include sm {
+	.loading-screen {
+		.loading-logo {
+			font-size: 28px;
+		}
+
+		.loading-container {
+			width: 160px;
+			height: 4px;
+		}
+
+		.loading-text {
+			font-size: 13px;
+		}
+	}
+
+	.first_loading {
+		&-content {
+			&-icon {
+				gap: 30px;
+
+				a {
+					&::before {
+						width: 48px;
+						height: 48px;
+					}
+
+					img {
+						width: 36px;
+						height: 36px;
+					}
+				}
+			}
+
+			&-text {
+				h1,
+				span {
+					font-size: 52px;
+				}
+			}
+		}
+	}
+}
+
+@include xs {
+	.loading-screen {
+		.loading-logo {
+			font-size: 24px;
+		}
+
+		.loading-container {
+			width: 140px;
+			height: 3px;
+		}
+
+		.loading-text {
+			font-size: 12px;
+		}
+	}
+
+	.first_loading {
+		&-content {
+			&-icon {
+				gap: 24px;
+
+				a {
+					&::before {
+						width: 40px;
+						height: 40px;
+						border-radius: 8px;
+					}
+
+					img {
+						width: 30px;
+						height: 30px;
+					}
+				}
+			}
+
+			&-text {
+				margin-top: 16px;
+
+				h1,
+				span {
+					font-size: 36px;
+				}
+			}
+		}
+	}
+}
+
+@include xs {
+}
