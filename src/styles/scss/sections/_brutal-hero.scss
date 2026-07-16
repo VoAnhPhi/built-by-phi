@@ -1,0 +1,693 @@
+// ============================================================
+// BRUTAL HERO — Editorial split layout
+// ============================================================
+
+.brutal-hero {
+  --brutal-portrait-size: clamp(18rem, min(calc(38vw - 16rem), 38vh), 46rem);
+
+  position: relative;
+  min-height: 100vh;
+  padding-top: var(--height-header);
+  overflow: hidden;
+  border-bottom: $brutal-border-thick;
+  background: $brutal-white;
+  color: $brutal-black;
+
+  &__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 58fr) minmax(360px, 42fr);
+    min-height: calc(100vh - var(--height-header));
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: clamp(3.2rem, 5vh, 7.2rem);
+    min-width: 0;
+    padding: clamp(3.2rem, 5vw, 7.2rem) var(--brutal-margin)
+      clamp(2.4rem, 4vw, 4.8rem);
+  }
+
+  &__intro {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  &__eyebrow,
+  &__visual-label,
+  &__index,
+  &__role-label,
+  &__skills-label,
+  &__scroll-text {
+    font-family: "B-vn-Regular", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+  }
+
+  &__eyebrow {
+    margin: 0 0 clamp(2.8rem, 4vh, 5.6rem);
+    font-size: clamp(1.1rem, 0.85vw, 1.4rem);
+    line-height: 1.4;
+    color: $brutal-gray;
+
+    span {
+      margin: 0 0.7em;
+      color: $brutal-red;
+    }
+  }
+
+  &__name-wrapper {
+    position: relative;
+    z-index: 4;
+    min-width: 0;
+    overflow: hidden;
+    margin: -0.12em 0;
+    margin-left: -0.055em;
+    padding: 0.12em 0;
+  }
+
+  &__name {
+    display: flex;
+    flex-direction: column;
+    gap: 0.16em;
+    margin: 0;
+    font-family: "B-s-Bold", sans-serif;
+    font-size: clamp(9rem, 11.7vw, 19rem);
+    font-weight: 700;
+    line-height: 0.837;
+    letter-spacing: -0.055em;
+    text-transform: uppercase;
+    color: $brutal-black;
+    perspective: 1000px;
+  }
+
+  &__name-line {
+    display: flex;
+    align-items: baseline;
+    white-space: nowrap;
+
+    &--offset {
+      padding-left: 0.15em;
+      gap: 0.16em;
+    }
+  }
+
+  &__name-word {
+    display: inline-flex;
+    flex: 0 0 auto;
+  }
+
+  &__name-char {
+    display: inline-block;
+    transform-style: preserve-3d;
+  }
+
+  &__portrait {
+    position: absolute;
+    z-index: 1;
+    top: 48%;
+    right: clamp(-2.4rem, -1.5vw, -1.2rem);
+    width: var(--brutal-portrait-size);
+    background: $brutal-white;
+    margin: 0;
+    pointer-events: none;
+    transform: translateY(-15%);
+  }
+
+  &__portrait-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    opacity: 0.9;
+    mix-blend-mode: multiply;
+    filter: grayscale(0.32) sepia(0.08) saturate(0.72) contrast(1.06)
+      brightness(1.04);
+    -webkit-mask-image: radial-gradient(
+      ellipse 78% 84% at 56% 48%,
+      #000 54%,
+      rgba(#000, 0.92) 68%,
+      transparent 100%
+    );
+    mask-image: radial-gradient(
+      ellipse 78% 84% at 56% 48%,
+      #000 54%,
+      rgba(#000, 0.92) 68%,
+      transparent 100%
+    );
+  }
+
+  &__role {
+    display: grid;
+    grid-template-columns: clamp(10rem, 9.5vw, 14rem) minmax(0, 50rem);
+    gap: clamp(1.6rem, 2.5vw, 3.6rem);
+    align-items: start;
+    max-width: min(66rem, calc(100% - var(--brutal-portrait-size) + 2rem));
+    margin-top: clamp(3rem, 5vh, 6.4rem);
+    padding-top: 1.6rem;
+    border-top: $brutal-border-thin;
+  }
+
+  &__role-label {
+    padding-top: 0.2rem;
+    font-family: "B-s-Bold", sans-serif;
+    font-size: clamp(1.8rem, 1.45vw, 2.4rem);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    color: $brutal-gray;
+  }
+
+  &__role-copy {
+    margin: 0;
+    font-family: "B-vn-Regular", sans-serif;
+    font-size: clamp(1.7rem, 1.35vw, 2.3rem);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.025em;
+  }
+
+  &__footer {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2.4rem;
+    width: 100%;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.8rem;
+    min-width: 0;
+    max-width: 62rem;
+  }
+
+  &__skills {
+    display: grid;
+    grid-template-columns: 7.2rem minmax(0, 1fr);
+    gap: 1.6rem;
+    align-items: baseline;
+  }
+
+  &__skills-label {
+    font-family: "B-vn-Medium", sans-serif;
+    font-size: clamp(1.2rem, 0.85vw, 1.4rem);
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    color: $brutal-gray;
+  }
+
+  &__skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+  }
+
+  &__skills-item {
+    font-family: "B-vn-Regular", sans-serif;
+    font-size: clamp(1rem, 0.72vw, 1.2rem);
+    font-weight: 400;
+    line-height: 1.5;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  &__skills-separator {
+    margin: 0 0.65em;
+    color: $brutal-gray;
+  }
+
+  &__social {
+    display: flex;
+    gap: 0.8rem;
+    padding-left: 7rem;
+  }
+
+  &__social-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 4rem;
+    border: $brutal-border-thin;
+    border-radius: 1rem;
+    text-decoration: none;
+    color: $brutal-red;
+    background: $brutal-white;
+    transition:
+      color 0.25s $brutal-ease-out,
+      background-color 0.25s $brutal-ease-out,
+      transform 0.25s $brutal-ease-out;
+
+    &:hover,
+    &:focus-visible {
+      color: $brutal-white;
+      background: $brutal-red;
+      transform: translateY(-0.3rem);
+    }
+  }
+
+  &__social-icon {
+    display: block;
+    width: 2rem;
+    height: 2rem;
+    background: currentColor;
+    -webkit-mask: var(--social-icon) center / contain no-repeat;
+    mask: var(--social-icon) center / contain no-repeat;
+  }
+
+  &__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.8rem;
+    flex: 0 0 auto;
+    min-width: 17rem;
+    padding: 1.4rem 1.6rem;
+    border: $brutal-border-thin;
+    font-family: "B-vn-Medium", sans-serif;
+    font-size: clamp(1rem, 0.75vw, 1.3rem);
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: $brutal-black;
+    background: transparent;
+    transition:
+      background-color 0.25s $brutal-ease-out,
+      color 0.25s $brutal-ease-out;
+
+    &:hover,
+    &:focus-visible {
+      background: $brutal-black;
+      color: $brutal-white;
+    }
+  }
+
+  &__cta-arrow {
+    font-family: "B-vn-Regular", sans-serif;
+    font-size: 1.6em;
+    line-height: 0;
+    color: $brutal-red;
+  }
+
+  &__visual {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    min-height: calc(100vh - var(--height-header));
+    overflow: hidden;
+    border-left: $brutal-border-thin;
+    background: $brutal-white;
+    transform-origin: center;
+  }
+
+  &__visual-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background-image:
+      linear-gradient(rgba($brutal-black, 0.09) 1px, transparent 1px),
+      linear-gradient(90deg, rgba($brutal-black, 0.09) 1px, transparent 1px);
+    background-size: clamp(3.6rem, 4vw, 6.4rem) clamp(3.6rem, 4vw, 6.4rem);
+  }
+
+  &__visual-inner {
+    position: absolute;
+    inset: -8%;
+    z-index: 2;
+    opacity: 0.46;
+  }
+
+  &__visual-3d,
+  &__visual-frame-3d {
+    width: 100%;
+    height: 100%;
+  }
+
+  &__visual-frame-3d {
+    pointer-events: auto;
+  }
+
+  &__visual-label {
+    position: absolute;
+    top: 2.4rem;
+    left: 2.4rem;
+    z-index: 3;
+    font-size: clamp(0.9rem, 0.65vw, 1.1rem);
+    line-height: 1.3;
+    color: $brutal-gray;
+    opacity: 1;
+  }
+
+  &__index {
+    position: absolute;
+    right: 1.8rem;
+    bottom: 2.4rem;
+    z-index: 3;
+    font-size: clamp(0.9rem, 0.65vw, 1.1rem);
+    line-height: 1;
+    color: $brutal-black;
+    writing-mode: vertical-rl;
+    opacity: 1;
+  }
+
+  &__scroll {
+    position: absolute;
+    left: 2.4rem;
+    bottom: 2.4rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+  }
+
+  &__scroll-text {
+    font-size: 0.9rem;
+    line-height: 1;
+    color: $brutal-gray;
+  }
+
+  &__scroll-line {
+    position: relative;
+    display: block;
+    width: 5.6rem;
+    height: 1px;
+    overflow: hidden;
+    background: rgba($brutal-black, 0.4);
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 45%;
+      height: 100%;
+      background: $brutal-red;
+      animation: brutalHeroScroll 1.7s ease-in-out infinite;
+    }
+  }
+
+  @include md {
+    &__layout {
+      grid-template-columns: minmax(0, 60fr) minmax(320px, 40fr);
+    }
+
+    &__content {
+      padding-left: 3.2rem;
+      padding-right: 3.2rem;
+    }
+
+    &__name {
+      font-size: clamp(8rem, 11vw, 14rem);
+    }
+
+    &__footer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @include sm {
+    &__layout {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    &__content {
+      gap: 0;
+      min-height: auto;
+      padding: 4rem 3.2rem 3.2rem;
+    }
+
+    &__name {
+      font-size: clamp(8rem, 14vw, 11.5rem);
+    }
+
+    &__portrait {
+      position: relative;
+      top: auto;
+      right: auto;
+      flex: 0 0 auto;
+      align-self: center;
+      width: min(44vw, 34rem);
+      margin: clamp(6rem, 8vw, 8rem) auto clamp(4.8rem, 6vw, 6.4rem);
+      transform: none;
+    }
+
+    &__role {
+      grid-template-columns: 11rem minmax(0, 1fr);
+      gap: 2rem;
+      max-width: 72rem;
+    }
+
+    &__footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__cta {
+      width: 100%;
+    }
+
+    &__visual {
+      min-height: min(64rem, 60svh);
+      border-top: $brutal-border-thin;
+      border-left: 0;
+    }
+
+    &__visual-label {
+      top: 2rem;
+      left: 2.4rem;
+    }
+
+    &__index {
+      right: 2.4rem;
+      bottom: 2.4rem;
+    }
+
+    &__scroll {
+      left: 2.4rem;
+      bottom: 2.4rem;
+    }
+  }
+
+  @include xs {
+    min-height: auto;
+
+    &__layout {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    &__content {
+      gap: 0;
+      min-height: auto;
+      padding: 3.2rem var(--brutal-margin) 2.4rem;
+    }
+
+    &__eyebrow {
+      margin-bottom: 4rem;
+    }
+
+    &__name {
+      font-size: clamp(7.2rem, 23vw, 13rem);
+      line-height: 0.78;
+    }
+
+    &__portrait {
+      position: relative;
+      top: auto;
+      right: auto;
+      flex: 0 0 auto;
+      align-self: center;
+      width: min(56vw, 30rem);
+      margin: clamp(5.6rem, 12vw, 7.2rem) auto clamp(4rem, 9vw, 5.6rem);
+      transform: none;
+    }
+
+    &__name-line--offset {
+      padding-left: 0.08em;
+      gap: 0.13em;
+    }
+
+    &__role {
+      grid-template-columns: clamp(9rem, 24vw, 10.5rem) 1fr;
+      margin-top: 3.6rem;
+    }
+
+    &__role-copy {
+      font-size: clamp(1.5rem, 4.2vw, 1.9rem);
+    }
+
+    &__footer {
+      align-items: stretch;
+      flex-direction: column;
+    }
+
+    &__skills {
+      grid-template-columns: 7rem 1fr;
+      gap: 1.2rem;
+    }
+
+    &__social {
+      padding-left: 6rem;
+    }
+
+    &__cta {
+      width: 100%;
+      min-width: 0;
+    }
+
+    &__visual {
+      min-height: clamp(48rem, 68svh, 58rem);
+      border-top: $brutal-border-thin;
+      border-left: 0;
+    }
+
+    &__visual-label {
+      top: 1.6rem;
+      left: var(--brutal-margin);
+    }
+
+    &__index {
+      right: var(--brutal-margin);
+      bottom: 1.8rem;
+    }
+
+    &__scroll {
+      left: var(--brutal-margin);
+      bottom: 1.8rem;
+    }
+  }
+
+  @include xxs {
+    &__content {
+      gap: 0;
+      padding-top: 2.4rem;
+    }
+
+    &__eyebrow {
+      margin-bottom: 3.2rem;
+    }
+
+    &__name {
+      font-size: clamp(6.2rem, 22vw, 9.2rem);
+    }
+
+    &__portrait {
+      width: min(54vw, 23rem);
+      margin-top: 5.6rem;
+      margin-bottom: 4rem;
+    }
+
+    &__role {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 3rem;
+    }
+
+    &__skills {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    &__social {
+      padding-left: 0;
+    }
+
+    &__visual {
+      min-height: 48rem;
+    }
+  }
+
+  @media screen and (min-width: 992px) and (max-height: 720px) {
+    &__content {
+      gap: 2.4rem;
+      padding-top: 2.4rem;
+      padding-bottom: 2.4rem;
+    }
+
+    &__eyebrow {
+      margin-bottom: 2rem;
+    }
+
+    &__name {
+      font-size: clamp(7.6rem, 10vw, 13rem);
+    }
+
+    &__role {
+      margin-top: 2.4rem;
+    }
+
+    &__portrait {
+      top: 52%;
+    }
+  }
+
+  @media screen and (min-width: 1440px) and (max-height: 720px) {
+    &__portrait {
+      top: 46%;
+    }
+  }
+
+  @media screen and (max-width: 420px) {
+    &__content {
+      gap: 0;
+    }
+
+    &__name {
+      font-size: clamp(5.8rem, 21vw, 8.2rem);
+    }
+
+    &__portrait {
+      width: min(52vw, 21rem);
+    }
+
+    &__role-label {
+      font-size: 1.7rem;
+    }
+
+    &__social-link {
+      width: 3.6rem;
+      height: 3.6rem;
+    }
+
+    &__social-icon {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+}
+
+@keyframes brutalHeroScroll {
+  0% {
+    transform: translateX(-110%);
+  }
+  100% {
+    transform: translateX(245%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brutal-hero__scroll-line::after {
+    animation: none;
+  }
+}
