@@ -19,12 +19,9 @@ export default function SmoothScrollProvider({ children }) {
         document.body.style.setProperty("scroll-behavior", "auto", "important");
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const lowPowerDevice =
-            (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
-            (navigator.deviceMemory && navigator.deviceMemory <= 4);
-
-        // Native scrolling is cheaper and more reliable on low-power hardware.
-        if (reduceMotion || lowPowerDevice) {
+        // Keep Lenis enabled on low-power devices because the section reveal
+        // animations and ScrollTrigger synchronization depend on its events.
+        if (reduceMotion) {
             window.lenis = null;
             return undefined;
         }
