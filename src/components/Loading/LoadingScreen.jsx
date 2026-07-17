@@ -48,6 +48,7 @@ const LoadingScreen = ({
 	minVisibleMs = 800, // tối thiểu màn loading hiển thị
 	idleDurationMs = 700, // khi không có task, chạy giả lập trong thời gian này
 	fadeOutMs = 500, // thời gian fade-out
+	keepScrollLockedOnComplete = false,
 	// Fonts cần preload trước (quan trọng nhất cho loading screen UI)
 	preloadFonts = DEFAULT_PRELOAD_FONTS,
 }) => {
@@ -142,11 +143,15 @@ const LoadingScreen = ({
 		// Cleanup function
 		const cleanup = () => {
 			tweenRef.current?.kill();
-			document.documentElement.classList.remove("no-scroll");
-			document.body.classList.remove("no-scroll");
 			window.removeEventListener("wheel", preventScroll, { capture: true });
 			window.removeEventListener("touchmove", preventScroll, { capture: true });
 			window.scrollTo(0, 0);
+
+			// FirstLoading owns the scroll lock during the intro phase.
+			if (keepScrollLockedOnComplete) return;
+
+			document.documentElement.classList.remove("no-scroll");
+			document.body.classList.remove("no-scroll");
 			setTimeout(() => {
 				try {
 					window.lenis?.start();
@@ -165,18 +170,23 @@ const LoadingScreen = ({
 			};
 		}
 
-		// === LOGIC MỚI: Progress chạy đều theo thời gian ===
-		// Chạy linear từ 0 -> 90% trong suốt minVisibleMs
-		// Khi tất cả tasks xong VÀ đã đủ minVisibleMs -> chạy tiếp 90 -> 100% rồi fade out
-
+		// Progress 0 -> 90% phản ánh số tác vụ tải thực sự đã hoàn tất.
+		// 90 -> 100% là bước xác nhận readiness và chuyển màn hình.
 		progressObj.current.value = 0;
 		updateUI(0);
 
-		// Bắt đầu tween linear từ 0 -> 90% trong minVisibleMs
-		tweenTo(90, minVisibleMs, "linear");
+		let completedTasks = 0;
+		const trackedTasks = tasks.map((task) =>
+			Promise.resolve(task).finally(() => {
+				if (destroyed) return;
+				completedTasks += 1;
+				const actualProgress = (completedTasks / total) * 90;
+				tweenTo(actualProgress, 180, "power1.out");
+			}),
+		);
 
 		// Đợi tất cả tasks hoàn thành
-		Promise.allSettled(tasks).then(() => {
+		Promise.allSettled(trackedTasks).then(() => {
 			if (destroyed) return;
 
 			const elapsed = Date.now() - startAt;
@@ -205,7 +215,7 @@ const LoadingScreen = ({
 			destroyed = true;
 			cleanup();
 		};
-	}, [assets, preloadChunks, preloadFonts, useFonts, minVisibleMs, idleDurationMs, fadeOutMs, onComplete]);
+	}, [assets, preloadChunks, preloadFonts, useFonts, minVisibleMs, idleDurationMs, fadeOutMs, keepScrollLockedOnComplete, onComplete]);
 
 	return (
 		<div className="loading-screen" ref={screenRef}>

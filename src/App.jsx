@@ -5,13 +5,18 @@ import LoadingScreen from "./components/Loading/LoadingScreen";
 import FirstLoading from "./components/Loading/FirstLoading";
 import PageTransition from "./components/Loading/PageTransition";
 import { ContentReadyProvider } from "./hooks/useContentReady";
+import { waitForThreeSceneReady } from "./utils/threeSceneReady";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const INITIAL_ASSETS = [
 	"/img/icon/github2.svg",
 	"/img/icon/link2.svg",
+	"/img/main/voanhphi-640.webp",
 ];
-const PRELOAD_CHUNKS = [];
+const PRELOAD_CHUNKS = [async () => {
+	await import("./components/Section/Three");
+	await waitForThreeSceneReady();
+}];
 
 export default function App() {
 	const [phase, setPhase] = useState("loading");
@@ -66,6 +71,7 @@ export default function App() {
 					minVisibleMs={900}
 					idleDurationMs={700}
 					fadeOutMs={250}
+					keepScrollLockedOnComplete={isFirstVisit}
 				/>
 			)}
 

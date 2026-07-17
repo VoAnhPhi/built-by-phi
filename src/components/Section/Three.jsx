@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 import { gsap } from "gsap";
+import { markThreeSceneReady } from "@/utils/threeSceneReady";
 
 export default function ThreeScene() {
 	const containerRef = useRef(null);
@@ -303,6 +304,7 @@ export default function ThreeScene() {
 			noiseUniforms.uTime.value = clock.getElapsedTime();
 			controls.update();
 			renderer.render(scene, camera);
+			markThreeSceneReady();
 		};
 		const animate = (time) => {
 			rafId = requestAnimationFrame(animate);

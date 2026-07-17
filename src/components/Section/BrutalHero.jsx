@@ -4,7 +4,6 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
 } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -46,21 +45,6 @@ export default function BrutalHero() {
   const heroRef = useRef(null);
   const isContentReady = useContentReady();
   const hasAnimatedRef = useRef(false);
-  const [shouldLoadThree, setShouldLoadThree] = useState(false);
-
-  useEffect(() => {
-    if (!isContentReady) return undefined;
-
-    if ("requestIdleCallback" in window) {
-      const idleId = window.requestIdleCallback(() => setShouldLoadThree(true), {
-        timeout: 700,
-      });
-      return () => window.cancelIdleCallback(idleId);
-    }
-
-    const timeoutId = window.setTimeout(() => setShouldLoadThree(true), 250);
-    return () => window.clearTimeout(timeoutId);
-  }, [isContentReady]);
 
   useLayoutEffect(() => {
     if (!heroRef.current || hasAnimatedRef.current) return undefined;
@@ -312,11 +296,9 @@ export default function BrutalHero() {
             Portfolio / 2026
           </span>
           <div className="brutal-hero__visual-inner">
-            {shouldLoadThree && (
-              <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
-                <ThreeScene />
-              </Suspense>
-            )}
+            <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
+              <ThreeScene />
+            </Suspense>
           </div>
 
           <div className="brutal-hero__scroll" aria-hidden="true">
