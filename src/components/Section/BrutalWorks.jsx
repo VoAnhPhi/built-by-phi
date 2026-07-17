@@ -2,6 +2,7 @@ import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
+import { useContentReady } from "@/hooks/useContentReady";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -48,8 +49,22 @@ const PROJECTS = [
 
 export default function BrutalWorks() {
   const sectionRef = useRef(null);
+  const isContentReady = useContentReady();
 
   useLayoutEffect(() => {
+    if (!isContentReady || !sectionRef.current) return undefined;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reducedMotionContext = gsap.context(() => {
+        gsap.set([".brutal-works__item", ".brutal-works__title"], {
+          clearProps: "transform,opacity",
+          opacity: 1,
+        });
+      }, sectionRef);
+
+      return () => reducedMotionContext.revert();
+    }
+
     const ctx = gsap.context(() => {
       gsap.from(".brutal-works__item", {
         y: 80,
@@ -77,7 +92,7 @@ export default function BrutalWorks() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isContentReady]);
 
   return (
     <section

@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useContentReady } from "@/hooks/useContentReady";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -158,9 +159,28 @@ export default function BrutalAbout() {
   const experienceRef = useRef(null);
   const progressRef = useRef(null);
   const progressCountRef = useRef(null);
+  const isContentReady = useContentReady();
 
   useLayoutEffect(() => {
-    if (!sectionRef.current || !experienceRef.current) return undefined;
+    if (!isContentReady || !sectionRef.current || !experienceRef.current) {
+      return undefined;
+    }
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reducedMotionContext = gsap.context(() => {
+        gsap.set(
+          [
+            ".brutal-about__visual",
+            ".brutal-about__profile-copy",
+            ".brutal-about__experience-item",
+          ],
+          { clearProps: "transform,opacity", opacity: 1 },
+        );
+        gsap.set(progressRef.current, { scaleX: 1 });
+      }, sectionRef);
+
+      return () => reducedMotionContext.revert();
+    }
 
     let journeyFrame;
     let updateJourneyProgress = () => {};
@@ -277,7 +297,7 @@ export default function BrutalAbout() {
       if (journeyFrame) window.cancelAnimationFrame(journeyFrame);
       ctx.revert();
     };
-  }, []);
+  }, [isContentReady]);
 
   return (
     <section

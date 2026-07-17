@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import gsap from "gsap";
 
 // Helpers -------------------------------------------------
@@ -58,24 +58,28 @@ const LoadingScreen = ({
 
 	const progressObj = useRef({ value: 0 }); // dùng tween mượt
 	const tweenRef = useRef(null);
-	const [progress, setProgress] = useState(0);
 
 	// cập nhật UI
 	const updateUI = (pct) => {
 		const v = Math.max(0, Math.min(100, Math.round(pct)));
-		setProgress(v);
 		if (barRef.current) barRef.current.style.width = `${v}%`;
 		if (textRef.current) textRef.current.textContent = `LOADING ${v}%`;
 	};
 	// tween progress mượt
 	const tweenTo = (toPct, durationMs = 300, ease = "power1.out", onComplete) => {
 		tweenRef.current?.kill();
+		const distance = Math.abs(toPct - progressObj.current.value);
+		const readableDurationMs = Math.max(durationMs, distance * 12);
 		tweenRef.current = gsap.to(progressObj.current, {
 			value: toPct,
-			duration: Math.max(0.05, durationMs / 1000),
+			duration: Math.max(0.05, readableDurationMs / 1000),
 			ease,
+			overwrite: true,
 			onUpdate: () => updateUI(progressObj.current.value),
-			onComplete,
+			onComplete: () => {
+				updateUI(toPct);
+				onComplete?.();
+			},
 		});
 	};
 
@@ -114,6 +118,8 @@ const LoadingScreen = ({
 
 		const startAt = Date.now();
 		let destroyed = false;
+		let finishTimer;
+		let fadeTimer;
 
 		// Build tasks list -----------------------------------
 		const tasks = [];
@@ -143,6 +149,8 @@ const LoadingScreen = ({
 		// Cleanup function
 		const cleanup = () => {
 			tweenRef.current?.kill();
+			window.clearTimeout(finishTimer);
+			window.clearTimeout(fadeTimer);
 			window.removeEventListener("wheel", preventScroll, { capture: true });
 			window.removeEventListener("touchmove", preventScroll, { capture: true });
 			window.scrollTo(0, 0);
@@ -181,7 +189,7 @@ const LoadingScreen = ({
 				if (destroyed) return;
 				completedTasks += 1;
 				const actualProgress = (completedTasks / total) * 90;
-				tweenTo(actualProgress, 180, "power1.out");
+				tweenTo(actualProgress, 300, "power1.out");
 			}),
 		);
 
@@ -189,26 +197,25 @@ const LoadingScreen = ({
 		Promise.allSettled(trackedTasks).then(() => {
 			if (destroyed) return;
 
-			const elapsed = Date.now() - startAt;
-			const remain = Math.max(0, minVisibleMs - elapsed);
-
-			// Hàm kết thúc: chạy từ vị trí hiện tại -> 100% rồi fade out
+			// Luôn hiển thị rõ mốc 90% trước khi xác nhận readiness.
 			const finish = () => {
 				if (destroyed) return;
-				const currentProgress = progressObj.current.value;
-				// Tính thời gian còn lại tỷ lệ với % còn phải chạy
-				const remainingPercent = 100 - currentProgress;
-				const finishDuration = Math.max(200, (remainingPercent / 10) * 100); // ~100ms mỗi 10%
-				tweenTo(100, finishDuration, "power1.out", fadeOut);
+				const elapsed = Date.now() - startAt;
+				const remain = Math.max(0, minVisibleMs - elapsed);
+				const showComplete = () => {
+					tweenTo(100, 320, "power1.out", () => {
+						fadeTimer = window.setTimeout(fadeOut, 180);
+					});
+				};
+
+				if (remain > 0) {
+					finishTimer = window.setTimeout(showComplete, remain);
+				} else {
+					showComplete();
+				}
 			};
 
-			if (remain > 0) {
-				// Vẫn còn thời gian minVisible, đợi thêm rồi finish
-				setTimeout(finish, remain);
-			} else {
-				// Đã đủ minVisible, finish ngay
-				finish();
-			}
+			tweenTo(90, 600, "power1.out", finish);
 		});
 
 		return () => {
@@ -224,7 +231,7 @@ const LoadingScreen = ({
 				<div className="loading-bar" ref={barRef} />
 			</div>
 			<div className="loading-text" ref={textRef}>
-				LOADING {progress}%
+				LOADING 0%
 			</div>
 		</div>
 	);

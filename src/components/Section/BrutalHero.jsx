@@ -4,6 +4,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
+  useState,
 } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -45,6 +46,14 @@ export default function BrutalHero() {
   const heroRef = useRef(null);
   const isContentReady = useContentReady();
   const hasAnimatedRef = useRef(false);
+  const [shouldMountThree, setShouldMountThree] = useState(false);
+
+  useEffect(() => {
+    // Let the loading UI paint the completed font/image milestones before
+    // WebGL shader compilation briefly occupies the main thread.
+    const mountTimer = window.setTimeout(() => setShouldMountThree(true), 900);
+    return () => window.clearTimeout(mountTimer);
+  }, []);
 
   useLayoutEffect(() => {
     if (!heroRef.current || hasAnimatedRef.current) return undefined;
@@ -296,9 +305,11 @@ export default function BrutalHero() {
             Portfolio / 2026
           </span>
           <div className="brutal-hero__visual-inner">
-            <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
-              <ThreeScene />
-            </Suspense>
+            {shouldMountThree && (
+              <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
+                <ThreeScene />
+              </Suspense>
+            )}
           </div>
 
           <div className="brutal-hero__scroll" aria-hidden="true">

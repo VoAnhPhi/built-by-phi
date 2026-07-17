@@ -43,6 +43,13 @@ export default function BrutalManifesto() {
 		if (!isContentReady || hasAnimatedRef.current || !sectionRef.current) return;
 
 		hasAnimatedRef.current = true;
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			gsap.set(".brutal-manifesto__line", {
+				clearProps: "transform,opacity",
+				opacity: 1,
+			});
+			return;
+		}
 
 		gsap.context(() => {
 			// Reveal lines with stagger

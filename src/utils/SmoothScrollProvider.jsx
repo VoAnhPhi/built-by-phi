@@ -42,6 +42,15 @@ export default function SmoothScrollProvider({ children }) {
         // Expose lenis instance ra window để các component có thể access
         window.lenis = lenis;
 
+        // The provider can mount after LoadingScreen has already called stop().
+        // Mirror the DOM lock so Lenis cannot run behind loading or intro.
+        if (
+            document.documentElement.classList.contains("no-scroll") ||
+            document.body.classList.contains("no-scroll")
+        ) {
+            lenis.stop();
+        }
+
         // Sync Lenis với ScrollTrigger
         lenis.on("scroll", ScrollTrigger.update);
 

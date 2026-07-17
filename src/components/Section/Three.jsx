@@ -298,13 +298,19 @@ export default function ThreeScene() {
 		let rafId = 0;
 		let lastFrame = 0;
 		let isInViewport = true;
+		let hasScheduledReadySignal = false;
 		const frameInterval = 1000 / targetFps;
 		const renderFrame = () => {
 			dirLight.position.copy(camera.position);
 			noiseUniforms.uTime.value = clock.getElapsedTime();
 			controls.update();
 			renderer.render(scene, camera);
-			markThreeSceneReady();
+			if (!hasScheduledReadySignal) {
+				hasScheduledReadySignal = true;
+				requestAnimationFrame(() => {
+					requestAnimationFrame(markThreeSceneReady);
+				});
+			}
 		};
 		const animate = (time) => {
 			rafId = requestAnimationFrame(animate);

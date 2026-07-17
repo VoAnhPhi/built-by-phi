@@ -102,6 +102,9 @@ body {
 		@include text(16px, B-vn-Medium, normal, $secondary-cl, null);
 		letter-spacing: 0.5px;
 		margin-top: 10px;
+		min-width: 13ch;
+		text-align: center;
+		font-variant-numeric: tabular-nums;
 	}
 }
 

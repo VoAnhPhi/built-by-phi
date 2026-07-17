@@ -30,6 +30,14 @@ export default function BrutalTrajectory() {
 		if (!isContentReady || hasAnimatedRef.current || !sectionRef.current) return;
 
 		hasAnimatedRef.current = true;
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+			gsap.set(".brutal-trajectory__phase", {
+				clearProps: "transform,opacity",
+				opacity: 1,
+			});
+			gsap.set(".brutal-trajectory__line", { clearProps: "transform" });
+			return;
+		}
 
 		gsap.context(() => {
 			// Line draws in

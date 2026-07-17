@@ -1,13 +1,28 @@
 import React, { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useContentReady } from "@/hooks/useContentReady";
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function BrutalContact() {
   const sectionRef = useRef(null);
+  const isContentReady = useContentReady();
 
   useLayoutEffect(() => {
+    if (!isContentReady || !sectionRef.current) return undefined;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      const reducedMotionContext = gsap.context(() => {
+        gsap.set(".brutal-contact__cta", {
+          clearProps: "transform,opacity",
+          opacity: 1,
+        });
+      }, sectionRef);
+
+      return () => reducedMotionContext.revert();
+    }
+
     const ctx = gsap.context(() => {
       gsap.from(".brutal-contact__cta", {
         scale: 0.9,
@@ -22,7 +37,7 @@ export default function BrutalContact() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [isContentReady]);
 
   return (
     <section
