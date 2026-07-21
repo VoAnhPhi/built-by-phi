@@ -141,6 +141,8 @@
       rgba(#000, 0.92) 68%,
       transparent 100%
     );
+    transform-origin: center bottom;
+    will-change: transform;
   }
 
   &__role {
@@ -323,6 +325,7 @@
       linear-gradient(rgba($brutal-black, 0.09) 1px, transparent 1px),
       linear-gradient(90deg, rgba($brutal-black, 0.09) 1px, transparent 1px);
     background-size: clamp(3.6rem, 4vw, 6.4rem) clamp(3.6rem, 4vw, 6.4rem);
+    will-change: transform;
   }
 
   &__visual-inner {
@@ -330,6 +333,7 @@
     inset: -8%;
     z-index: 2;
     opacity: 0.46;
+    will-change: transform, opacity;
   }
 
   &__visual-3d,

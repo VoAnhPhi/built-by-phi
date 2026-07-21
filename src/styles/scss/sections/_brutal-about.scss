@@ -13,6 +13,16 @@
   background: var(--color-canvas);
   color: var(--color-text);
 
+  &__visual {
+    transform-origin: center;
+    will-change: transform, clip-path;
+  }
+
+  &__stack-stage,
+  &__experience-item {
+    will-change: transform, opacity;
+  }
+
   &__container {
     width: min(
       calc(100% - (var(--brutal-margin) * 2)),
@@ -107,7 +117,7 @@
       line-height: 1;
       text-align: center;
       text-transform: uppercase;
-      color: var(--color-purple);;
+      color: var(--color-purple);
 
       &:last-child {
         border-right: 0;

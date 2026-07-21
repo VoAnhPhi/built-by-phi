@@ -9,6 +9,7 @@ import React, {
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useContentReady } from "@/hooks/useContentReady";
+import { MOTION, prefersReducedMotion } from "@/motion/tokens";
 
 const ThreeScene = lazy(() => import("./Three"));
 
@@ -64,9 +65,7 @@ export default function BrutalHero() {
       y: 0,
     });
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = prefersReducedMotion();
     if (reduceMotion) return undefined;
 
     const context = gsap.context(() => {
@@ -91,9 +90,7 @@ export default function BrutalHero() {
     hasAnimatedRef.current = true;
     const heroElement = heroRef.current;
 
-    const reduceMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
+    const reduceMotion = prefersReducedMotion();
 
     const context = gsap.context(() => {
       if (reduceMotion) {
@@ -110,7 +107,7 @@ export default function BrutalHero() {
 
       const timeline = gsap.timeline({
         delay: 0.15,
-        defaults: { ease: "power4.out" },
+        defaults: { ease: MOTION.ease.enter },
       });
 
       timeline
@@ -160,13 +157,50 @@ export default function BrutalHero() {
       });
 
       gsap.to(".brutal-hero__visual-inner", {
-        yPercent: -10,
+        yPercent: -12,
+        scale: 1.055,
         ease: "none",
         scrollTrigger: {
           trigger: heroElement,
           start: "top top",
           end: "bottom top",
           scrub: 0.7,
+        },
+      });
+
+      gsap.to(".brutal-hero__portrait-image", {
+        yPercent: 8,
+        scale: 1.035,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroElement,
+          start: "top top",
+          end: "bottom top",
+          scrub: 0.9,
+        },
+      });
+
+      gsap.to(".brutal-hero__visual-grid", {
+        xPercent: 3,
+        yPercent: -4,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroElement,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.15,
+        },
+      });
+
+      gsap.to(".brutal-hero__footer", {
+        y: -26,
+        opacity: 0.25,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroElement,
+          start: "42% top",
+          end: "bottom top",
+          scrub: 0.8,
         },
       });
     }, heroElement);
@@ -306,7 +340,9 @@ export default function BrutalHero() {
           </span>
           <div className="brutal-hero__visual-inner">
             {shouldMountThree && (
-              <Suspense fallback={<div className="brutal-hero__visual-frame-3d" />}>
+              <Suspense
+                fallback={<div className="brutal-hero__visual-frame-3d" />}
+              >
                 <ThreeScene />
               </Suspense>
             )}

@@ -3,172 +3,213 @@
 // ============================================================
 
 .brutal-header {
-    position: fixed;
-    top: 0;
-    left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: var(--height-header);
+  background: transparent;
+  transition:
+    background 0.35s $brutal-ease-out,
+    border-color 0.35s $brutal-ease-out,
+    box-shadow 0.35s $brutal-ease-out;
+  border-bottom: 1px solid transparent;
+
+  &--scrolled {
+    background: rgba($brutal-white, 0.94);
+    border-bottom: $brutal-border-thin;
+    box-shadow: 0 0.8rem 3rem rgba($brutal-black, 0.045);
+    backdrop-filter: blur(14px);
+  }
+
+  &__progress {
+    position: absolute;
     right: 0;
-    z-index: 1000;
-    height: var(--height-header);
-    background: transparent;
-    transition: background 0.3s ease, border-color 0.3s ease;
-    border-bottom: 1px solid transparent;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    overflow: hidden;
+    pointer-events: none;
 
-    &--scrolled {
-        background: $brutal-white;
-        border-bottom: $brutal-border-thin;
+    > span {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: $brutal-red;
+      transform: scaleX(0);
+      transform-origin: left center;
+      will-change: transform;
+    }
+  }
+
+  // ============ INNER CONTAINER ============
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding: 0 var(--brutal-margin);
+  }
+
+  // ============ LOGO ============
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    text-decoration: none;
+    position: relative;
+    z-index: 1001;
+  }
+
+  &__logo-text {
+    font-family: "B-s-ExtraBold", sans-serif;
+    font-size: 2.4rem;
+    color: $brutal-black;
+    letter-spacing: -0.02em;
+  }
+
+  &__logo-dot {
+    width: 8px;
+    height: 8px;
+    background: $brutal-red;
+    display: block;
+  }
+
+  // ============ DESKTOP NAV ============
+  &__nav {
+    @include xs {
+      display: none;
+    }
+  }
+
+  &__nav-list {
+    display: flex;
+    gap: 4rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__nav-item {
+    display: flex;
+  }
+
+  &__nav-link {
+    font-family: "B-vn-Medium", monospace;
+    font-size: var(--brutal-label-fs);
+    color: $brutal-black;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.8rem 0;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    position: relative;
+    transition: color 0.2s ease;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $brutal-red;
+      transition: width 0.3s $brutal-ease-out;
     }
 
-    // ============ INNER CONTAINER ============
-    &__inner {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 100%;
-        padding: 0 var(--brutal-margin);
-    }
+    &:hover,
+    &:focus-visible,
+    &--active {
+      color: $brutal-red;
 
-    // ============ LOGO ============
-    &__logo {
-        display: flex;
-        align-items: center;
-        gap: 0.4rem;
-        text-decoration: none;
-        position: relative;
-        z-index: 1001;
-    }
-
-    &__logo-text {
-        font-family: "B-s-ExtraBold", sans-serif;
-        font-size: 2.4rem;
-        color: $brutal-black;
-        letter-spacing: -0.02em;
-    }
-
-    &__logo-dot {
-        width: 8px;
-        height: 8px;
-        background: $brutal-red;
-        display: block;
-    }
-
-    // ============ DESKTOP NAV ============
-    &__nav {
-        @include xs {
-            display: none;
-        }
-    }
-
-    &__nav-list {
-        display: flex;
-        gap: 4rem;
-        list-style: none;
-        margin: 0;
-        padding: 0;
-    }
-
-    &__nav-item {
-        display: flex;
-    }
-
-    &__nav-link {
-        font-family: "B-vn-Medium", monospace;
-        font-size: var(--brutal-label-fs);
-        color: $brutal-black;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0.8rem 0;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        position: relative;
-        transition: color 0.2s ease;
-
-        &::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: $brutal-red;
-            transition: width 0.3s $brutal-ease-out;
-        }
-
-        &:hover {
-            color: $brutal-red;
-
-            &::after {
-                width: 100%;
-            }
-        }
-    }
-
-    // ============ STATUS INDICATOR ============
-    &__status {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-
-        @include xs {
-            display: none;
-        }
-    }
-
-    &__status-dot {
-        width: 8px;
-        height: 8px;
-        background: $neutral-cl;
-        border-radius: 50%;
-        animation: statusPulse 1.5s ease-in-out infinite;
-    }
-
-    &__status-text {
-        font-family: "B-vn-Regular", monospace;
-        font-size: var(--brutal-label-fs);
-        color: $brutal-gray;
-        letter-spacing: 0.1em;
-    }
-
-    // ============ MOBILE TOGGLE ============
-    &__toggle {
-        display: none;
-        flex-direction: column;
-        justify-content: center;
-        gap: 6px;
-        width: 32px;
-        height: 32px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        position: relative;
-        z-index: 1001;
-
-        @include xs {
-            display: flex;
-        }
-    }
-
-    &__toggle-bar {
+      &::after {
         width: 100%;
-        height: 2px;
-        background: $brutal-black;
-        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
     }
 
-    &__toggle--active {
-        .brutal-header__toggle-bar:first-child {
-            transform: rotate(45deg) translate(3px, 3px);
-        }
-        .brutal-header__toggle-bar:last-child {
-            transform: rotate(-45deg) translate(3px, -3px);
-        }
+    &:focus-visible {
+      outline: 1px solid $brutal-red;
+      outline-offset: 0.4rem;
     }
+  }
 
-    @keyframes statusPulse {
-        0%, 100% { opacity: 1; transform: scale(1); }
-        50% { opacity: 0.5; transform: scale(0.9); }
+  // ============ STATUS INDICATOR ============
+  &__status {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    @include xs {
+      display: none;
     }
+  }
+
+  &__status-dot {
+    width: 8px;
+    height: 8px;
+    background: $neutral-cl;
+    border-radius: 50%;
+    animation: statusPulse 1.5s ease-in-out infinite;
+  }
+
+  &__status-text {
+    font-family: "B-vn-Regular", monospace;
+    font-size: var(--brutal-label-fs);
+    color: $brutal-gray;
+    letter-spacing: 0.1em;
+  }
+
+  // ============ MOBILE TOGGLE ============
+  &__toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 32px;
+    height: 32px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    position: relative;
+    z-index: 1001;
+
+    @include xs {
+      display: flex;
+    }
+  }
+
+  &__toggle-bar {
+    width: 100%;
+    height: 2px;
+    background: $brutal-black;
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
+
+  &__toggle--active {
+    .brutal-header__toggle-bar:first-child {
+      transform: rotate(45deg) translate(3px, 3px);
+    }
+    .brutal-header__toggle-bar:last-child {
+      transform: rotate(-45deg) translate(3px, -3px);
+    }
+  }
+
+  @keyframes statusPulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.5;
+      transform: scale(0.9);
+    }
+  }
 }
 
 // ============================================================
@@ -176,114 +217,116 @@
 // ============================================================
 
 .brutal-mobile {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    background: $brutal-black;
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: $brutal-black;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.4s ease,
+    visibility 0.4s ease;
+
+  &--open {
+    opacity: 1;
+    visibility: visible;
+
+    .brutal-mobile__link {
+      animation: slideIn 0.5s $brutal-ease-out forwards;
+    }
+  }
+
+  // ============ CONTENT ============
+  &__content {
+    padding: var(--brutal-margin);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: calc(var(--height-header) + var(--brutal-margin));
+  }
+
+  // ============ NAV LINKS ============
+  &__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.4s ease, visibility 0.4s ease;
+    transform: translateY(20px);
+  }
 
-    &--open {
-        opacity: 1;
-        visibility: visible;
+  &__link-text {
+    font-family: "B-s-Bold", sans-serif;
+    font-size: var(--h2-fs);
+    color: $brutal-white;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
 
-        .brutal-mobile__link {
-            animation: slideIn 0.5s $brutal-ease-out forwards;
-        }
+    &:hover {
+      color: $brutal-red;
     }
+  }
 
-    // ============ CONTENT ============
-    &__content {
-        padding: var(--brutal-margin);
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        height: 100%;
-        padding-top: calc(var(--height-header) + var(--brutal-margin));
+  // ============ FOOTER ============
+  &__footer {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__email {
+    font-family: "B-vn-Regular", monospace;
+    font-size: var(--body14-fs);
+    color: $brutal-white;
+    text-decoration: none;
+    letter-spacing: 0.05em;
+
+    &:hover {
+      color: $brutal-red;
     }
+  }
 
-    // ============ NAV LINKS ============
-    &__nav {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
+  &__social {
+    display: flex;
+    gap: 2rem;
+
+    a {
+      font-family: "B-vn-Medium", monospace;
+      font-size: var(--brutal-label-fs);
+      color: $brutal-gray;
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.2s ease;
+
+      &:hover {
+        color: $brutal-red;
+      }
     }
+  }
 
-    &__link {
-        display: flex;
-        align-items: baseline;
-        gap: 2rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        padding: 0;
-        text-align: left;
-        opacity: 0;
-        transform: translateY(20px);
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
-
-    &__link-text {
-        font-family: "B-s-Bold", sans-serif;
-        font-size: var(--h2-fs);
-        color: $brutal-white;
-        text-transform: uppercase;
-        transition: color 0.2s ease;
-
-        &:hover {
-            color: $brutal-red;
-        }
-    }
-
-    // ============ FOOTER ============
-    &__footer {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
-    }
-
-    &__email {
-        font-family: "B-vn-Regular", monospace;
-        font-size: var(--body14-fs);
-        color: $brutal-white;
-        text-decoration: none;
-        letter-spacing: 0.05em;
-        
-        &:hover {
-            color: $brutal-red;
-        }
-    }
-
-    &__social {
-        display: flex;
-        gap: 2rem;
-
-        a {
-            font-family: "B-vn-Medium", monospace;
-            font-size: var(--brutal-label-fs);
-            color: $brutal-gray;
-            text-decoration: none;
-            letter-spacing: 0.1em;
-            transition: color 0.2s ease;
-
-            &:hover {
-                color: $brutal-red;
-            }
-        }
-    }
-
-    @keyframes slideIn {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
+  }
 }
 
 // Body no-scroll when menu open
 body.no-scroll {
-    overflow: hidden;
+  overflow: hidden;
 }

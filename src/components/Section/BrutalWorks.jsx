@@ -3,49 +3,35 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
 import { useContentReady } from "@/hooks/useContentReady";
+import { getProjectsArray } from "@/data/projects";
+import { MOTION, prefersReducedMotion } from "@/motion/tokens";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const PROJECTS = [
-  {
-    id: 1,
-    slug: "sonaspace",
-    title: "SONASPACE",
-    category: "INTERIOR E-COMMERCE",
-    year: "2025",
-    tech: ["REACT 19", "EXPRESS", "MYSQL"],
-    image: "/img/project/sonaspace/sonaspace-thumbnail-v2.png",
-  },
-  {
-    id: 2,
-    slug: "interface-style-comparison",
-    title: "UI STYLE RESEARCH",
-    category: "DESIGN RESEARCH TOOL",
-    year: "2026",
-    tech: ["REACT 19", "TYPESCRIPT", "VITE 6"],
-    image:
-      "/img/project/interface-style-comparison/interface-style-comparison-mockup.png",
-  },
-  {
-    id: 3,
-    slug: "tomatohub",
-    title: "TOMATOHUB",
-    category: "AI PLATFORM",
-    year: "2026",
-    tech: ["NEXT.JS", "FASTAPI", "POSTGRESQL"],
-    image: "img/project/tomato/tomatohub.png",
-  },
-  {
-    id: 4,
-    slug: "cinema-booking-system",
-    title: "CINEMA BOOKING SYSTEM",
-    category: "WEB APP",
-    year: "2024",
-    tech: ["REACT", "NODE.JS", "MONGODB"],
-    image:
-      "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2670&auto=format&fit=crop",
-  },
+const FEATURED_SLUGS = [
+  "sonaspace",
+  "interface-style-comparison",
+  "tomatohub",
+  "cinema-booking-system",
 ];
+
+const THUMBNAILS = {
+  sonaspace: "/img/project/sonaspace/sonaspace-thumbnail-v2.png",
+  "interface-style-comparison":
+    "/img/project/interface-style-comparison/interface-style-comparison-mockup.png",
+  tomatohub: "/img/project/tomato/tomatohub.png",
+};
+
+const ALL_PROJECTS = getProjectsArray();
+const PROJECTS = FEATURED_SLUGS.map((slug) =>
+  ALL_PROJECTS.find((project) => project.slug === slug),
+)
+  .filter(Boolean)
+  .map((project) => ({
+    ...project,
+    image: THUMBNAILS[project.slug] ?? project.mainImage,
+    tech: project.technologies.slice(0, 3),
+  }));
 
 export default function BrutalWorks() {
   const sectionRef = useRef(null);
@@ -54,33 +40,84 @@ export default function BrutalWorks() {
   useLayoutEffect(() => {
     if (!isContentReady || !sectionRef.current) return undefined;
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       const reducedMotionContext = gsap.context(() => {
-        gsap.set([".brutal-works__item", ".brutal-works__title"], {
-          clearProps: "transform,opacity",
-          opacity: 1,
-        });
+        gsap.set(
+          [
+            ".brutal-works__item",
+            ".brutal-works__title",
+            ".brutal-works__item-image",
+            ".brutal-works__item-image img",
+          ],
+          { clearProps: "transform,opacity,clipPath", opacity: 1 },
+        );
       }, sectionRef);
 
       return () => reducedMotionContext.revert();
     }
 
     const ctx = gsap.context(() => {
-      gsap.from(".brutal-works__item", {
-        y: 80,
-        opacity: 0,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: "power3.out",
-        scrollTrigger: {
-          trigger: ".brutal-works__list",
-          start: "top 80%",
-          once: true,
-        },
+      gsap.utils.toArray(".brutal-works__item").forEach((item, index) => {
+        const image = item.querySelector(".brutal-works__item-image");
+        const imageElement = item.querySelector("img");
+        const content = item.querySelector(".brutal-works__item-content");
+
+        gsap.fromTo(
+          image,
+          {
+            clipPath:
+              index % 2 === 0 ? "inset(0% 100% 0% 0%)" : "inset(0% 0% 0% 100%)",
+          },
+          {
+            clipPath: "inset(0% 0% 0% 0%)",
+            duration: MOTION.duration.scene,
+            ease: MOTION.ease.enter,
+            scrollTrigger: {
+              trigger: item,
+              start: "top 82%",
+              once: true,
+            },
+          },
+        );
+
+        gsap.from(imageElement, {
+          scale: 1.12,
+          duration: 1.3,
+          ease: MOTION.ease.soft,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 82%",
+            once: true,
+          },
+        });
+
+        gsap.from(content, {
+          x: index % 2 === 0 ? MOTION.distance.medium : -MOTION.distance.medium,
+          y: MOTION.distance.small,
+          opacity: 0,
+          duration: MOTION.duration.reveal,
+          ease: MOTION.ease.enter,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 76%",
+            once: true,
+          },
+        });
+
+        gsap.to(imageElement, {
+          yPercent: -7,
+          ease: "none",
+          scrollTrigger: {
+            trigger: item,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.85,
+          },
+        });
       });
 
       gsap.to(".brutal-works__title", {
-        x: 100,
+        xPercent: 7,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
@@ -136,8 +173,8 @@ export default function BrutalWorks() {
 
                 <p className="brutal-works__item-meta">
                   <span>{project.category}</span>
-                  <span aria-hidden="true">·</span>
-                  <span>{project.tech.join(" · ")}</span>
+                  <span aria-hidden="true">/</span>
+                  <span>{project.tech.join(" / ")}</span>
                 </p>
               </div>
             </article>

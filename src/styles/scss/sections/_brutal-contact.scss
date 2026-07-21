@@ -37,6 +37,7 @@
     margin: 0;
     text-transform: uppercase;
     letter-spacing: -0.02em;
+    will-change: transform;
 
     &--highlight {
       color: $brutal-red;
@@ -44,6 +45,17 @@
 
     @include xs {
       font-size: var(--h2-fs);
+    }
+  }
+
+  &__title-line {
+    display: block;
+    overflow: hidden;
+
+    > span {
+      display: block;
+      transform-origin: left bottom;
+      will-change: transform;
     }
   }
 
@@ -198,6 +210,12 @@
     50% {
       opacity: 0.5;
       transform: scale(0.8);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &__availability-dot {
+      animation: none;
     }
   }
 }

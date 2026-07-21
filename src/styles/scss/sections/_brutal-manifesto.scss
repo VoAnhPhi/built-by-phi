@@ -86,6 +86,8 @@
     text-transform: uppercase;
     letter-spacing: -0.02em;
     overflow: hidden;
+    transform-origin: left bottom;
+    will-change: transform, opacity;
 
     @include lg {
       letter-spacing: -0.018em;
@@ -121,11 +123,6 @@
 
       @include xxs {
         font-size: calc(var(--h1-fs) * 0.85);
-      }
-
-      // Glitch effect on hover
-      &:hover {
-        animation: glitch 0.3s ease;
       }
     }
   }
@@ -185,21 +182,14 @@
     display: flex;
     width: max-content;
     padding: clamp(2.4rem, 3.5vw, 5rem) 0;
-    animation: manifesto-marquee 48s linear infinite;
     will-change: transform;
-
-    @include md {
-      animation-duration: 44s;
-    }
 
     @include sm {
       padding: 2.4rem 0;
-      animation-duration: 42s;
     }
 
     @include xs {
       padding: clamp(1.2rem, 3vw, 2.3rem) 0;
-      animation-duration: 38s;
     }
   }
 
@@ -324,38 +314,6 @@
 
     @include xs {
       font-size: calc(var(--brutal-label-fs) * 0.9);
-    }
-  }
-
-  // ============ ANIMATIONS ============
-  @keyframes manifesto-marquee {
-    to {
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
-
-  @keyframes glitch {
-    0%,
-    100% {
-      transform: translate(0);
-    }
-    20% {
-      transform: translate(-2px, 2px);
-    }
-    40% {
-      transform: translate(2px, -2px);
-    }
-    60% {
-      transform: translate(-2px, -2px);
-    }
-    80% {
-      transform: translate(2px, 2px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    &__marquee-track {
-      animation-play-state: paused;
     }
   }
 }

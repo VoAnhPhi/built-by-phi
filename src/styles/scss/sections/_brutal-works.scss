@@ -31,8 +31,8 @@
 
   &__title {
     display: flex;
-    // flex-direction: column;	
-	gap: 2.1rem;
+    // flex-direction: column;
+    gap: 2.1rem;
     margin: 0;
     font-family: "B-s-Bold", sans-serif;
     font-size: clamp(4.2rem, 7vw, 9rem);
@@ -71,6 +71,11 @@
 
   &__item {
     min-width: 0;
+    will-change: transform, opacity;
+
+    &:nth-child(even) {
+      padding-top: clamp(5rem, 7vw, 10rem);
+    }
   }
 
   &__item-image {
@@ -79,11 +84,14 @@
     aspect-ratio: 16 / 10;
     overflow: hidden;
     border-radius: clamp(1.6rem, 2vw, 2.8rem);
+    will-change: clip-path;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      transform: scale(1.04);
+      will-change: transform;
       transition: transform 0.7s $brutal-ease-out;
     }
 
@@ -176,5 +184,11 @@
     color: $brutal-gray;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  @include xs {
+    &__item:nth-child(even) {
+      padding-top: 0;
+    }
   }
 }

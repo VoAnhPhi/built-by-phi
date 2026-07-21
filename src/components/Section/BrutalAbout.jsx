@@ -2,12 +2,13 @@ import { useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useContentReady } from "@/hooks/useContentReady";
+import { MOTION, prefersReducedMotion } from "@/motion/tokens";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const EXPERIENCE = [
   {
-    period: "Software Engineering — Ongoing",
+    period: "Software Engineering / Ongoing",
     position: "Industrial University of Ho Chi Minh City",
     company: "Academic & Self-Directed Study",
     description:
@@ -21,7 +22,7 @@ const EXPERIENCE = [
     ],
   },
   {
-    period: "Jan 2025 — Apr 2025",
+    period: "Jan 2025 to Apr 2025",
     position: "Freelance Front-End Developer",
     company: "NhaNgonSaiGon",
     description:
@@ -31,7 +32,7 @@ const EXPERIENCE = [
     projectUrl: "https://nhangonsaigon.com.vn/",
   },
   {
-    period: "May 2025 — Sep 2025",
+    period: "May 2025 to Sep 2025",
     position: "R&D and Full Stack Developer",
     company: "Hopper Solution & Education",
     description:
@@ -166,7 +167,7 @@ export default function BrutalAbout() {
       return undefined;
     }
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (prefersReducedMotion()) {
       const reducedMotionContext = gsap.context(() => {
         gsap.set(
           [
@@ -174,7 +175,7 @@ export default function BrutalAbout() {
             ".brutal-about__profile-copy",
             ".brutal-about__experience-item",
           ],
-          { clearProps: "transform,opacity", opacity: 1 },
+          { clearProps: "transform,opacity,clipPath", opacity: 1 },
         );
         gsap.set(progressRef.current, { scaleX: 1 });
       }, sectionRef);
@@ -182,54 +183,76 @@ export default function BrutalAbout() {
       return () => reducedMotionContext.revert();
     }
 
-    let journeyFrame;
-    let updateJourneyProgress = () => {};
-    const handleJourneyScroll = () => {
-      if (journeyFrame) return;
-
-      journeyFrame = window.requestAnimationFrame(() => {
-        journeyFrame = undefined;
-        updateJourneyProgress();
-      });
-    };
-
     const ctx = gsap.context(() => {
       const experienceItems = gsap.utils.toArray(
         ".brutal-about__experience-item",
       );
-      const firstExperienceItem = experienceItems[0];
-      const lastExperienceItem = experienceItems.at(-1);
-      const getHeaderOffset = () =>
-        Number.parseFloat(
-          getComputedStyle(document.documentElement).getPropertyValue(
-            "--height-header",
-          ),
-        ) || 0;
 
-      gsap.from(".brutal-about__visual, .brutal-about__profile-copy", {
-        y: 48,
+      gsap.fromTo(
+        ".brutal-about__visual",
+        { clipPath: "inset(8% 10% 8% 10%)", scale: 0.96 },
+        {
+          clipPath: "inset(0% 0% 0% 0%)",
+          scale: 1,
+          duration: MOTION.duration.scene,
+          ease: MOTION.ease.enter,
+          scrollTrigger: {
+            trigger: ".brutal-about__profile",
+            start: "top 78%",
+            once: true,
+          },
+        },
+      );
+
+      gsap.from(".brutal-about__profile-copy > *", {
+        y: MOTION.distance.medium,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.12,
-        ease: "power3.out",
+        duration: MOTION.duration.reveal,
+        stagger: 0.09,
+        ease: MOTION.ease.soft,
         scrollTrigger: {
-          trigger: ".brutal-about__profile",
-          start: "top 60%",
+          trigger: ".brutal-about__profile-copy",
+          start: "top 72%",
           once: true,
         },
       });
 
-      gsap.from(".brutal-about__experience-item", {
-        y: 56,
-        opacity: 0,
-        duration: 0.75,
-        stagger: 0.18,
-        ease: "power3.out",
+      gsap.to(".brutal-about__stack-stage", {
+        yPercent: -6,
+        ease: "none",
         scrollTrigger: {
-          trigger: ".brutal-about__experience-list",
-          start: "top 76%",
-          once: true,
+          trigger: ".brutal-about__profile",
+          start: "top bottom",
+          end: "bottom top",
+          scrub: 0.9,
         },
+      });
+
+      experienceItems.forEach((item, index) => {
+        gsap.from(item, {
+          y: MOTION.distance.large,
+          opacity: 0,
+          duration: MOTION.duration.reveal,
+          ease: MOTION.ease.enter,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 84%",
+            once: true,
+          },
+        });
+
+        gsap.from(item.querySelectorAll("time, h3, p, a"), {
+          x: index % 2 === 0 ? 24 : -24,
+          opacity: 0,
+          duration: MOTION.duration.normal,
+          stagger: 0.045,
+          ease: MOTION.ease.soft,
+          scrollTrigger: {
+            trigger: item,
+            start: "top 74%",
+            once: true,
+          },
+        });
       });
 
       gsap.set(progressRef.current, {
@@ -237,66 +260,27 @@ export default function BrutalAbout() {
         transformOrigin: "left center",
       });
 
-      updateJourneyProgress = () => {
-        const headerOffset = getHeaderOffset();
-        const firstItemTop =
-          firstExperienceItem.getBoundingClientRect().top + window.scrollY;
-        const lastItemTop =
-          lastExperienceItem.getBoundingClientRect().top + window.scrollY;
-        const currentPosition = window.scrollY + headerOffset;
-        const journeyLength = lastItemTop - firstItemTop;
-        const exactProgress = gsap.utils.clamp(
-          0,
-          1,
-          journeyLength > 0
-            ? (currentPosition - firstItemTop) / journeyLength
-            : 0,
-        );
+      ScrollTrigger.create({
+        trigger: ".brutal-about__experience-list",
+        start: "top center",
+        end: "bottom center",
+        onUpdate: (self) => {
+          gsap.set(progressRef.current, { scaleX: self.progress });
 
-        gsap.set(progressRef.current, { scaleX: exactProgress });
-
-        if (progressCountRef.current) {
-          const activationLine = headerOffset + 1;
-          const activeIndex = experienceItems.reduce(
-            (currentIndex, item, index) =>
-              item.getBoundingClientRect().top <= activationLine
-                ? index
-                : currentIndex,
-            0,
-          );
-
-          progressCountRef.current.textContent = String(
-            activeIndex + 1,
-          ).padStart(2, "0");
-        }
-      };
-
-      window.addEventListener("scroll", handleJourneyScroll, { passive: true });
-      window.addEventListener("resize", handleJourneyScroll);
-
-      gsap.to(progressRef.current, {
-        "--journey-driver": 1,
-        ease: "none",
-        scrollTrigger: {
-          trigger: firstExperienceItem,
-          endTrigger: lastExperienceItem,
-          start: () => `top top+=${getHeaderOffset()}`,
-          end: () => `top top+=${getHeaderOffset()}`,
-          scrub: true,
-          invalidateOnRefresh: true,
-          onUpdate: updateJourneyProgress,
+          if (progressCountRef.current) {
+            const activeIndex = Math.min(
+              experienceItems.length - 1,
+              Math.floor(self.progress * experienceItems.length),
+            );
+            progressCountRef.current.textContent = String(
+              activeIndex + 1,
+            ).padStart(2, "0");
+          }
         },
       });
-
-      updateJourneyProgress();
     }, sectionRef);
 
-    return () => {
-      window.removeEventListener("scroll", handleJourneyScroll);
-      window.removeEventListener("resize", handleJourneyScroll);
-      if (journeyFrame) window.cancelAnimationFrame(journeyFrame);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, [isContentReady]);
 
   return (
@@ -362,7 +346,7 @@ export default function BrutalAbout() {
             <h3>From interfaces to scalable systems.</h3>
             <p className="brutal-about__experience-intro">
               I build digital products across frontend, backend, and data
-              layers—turning product requirements into responsive interfaces,
+              layers, turning product requirements into responsive interfaces,
               reliable APIs, and maintainable systems.
             </p>
 

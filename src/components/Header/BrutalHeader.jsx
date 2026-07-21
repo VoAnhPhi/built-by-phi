@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { prefersReducedMotion } from "@/motion/tokens";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const NAV_ITEMS = [
   { id: "about", label: "ABOUT" },
@@ -9,16 +14,51 @@ const NAV_ITEMS = [
 ];
 
 export default function BrutalHeader() {
+  const headerRef = useRef(null);
+  const progressRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("top");
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 100);
-    };
+    const triggers = [];
+    let wasScrolled = window.scrollY > 100;
+    setScrolled(wasScrolled);
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    triggers.push(
+      ScrollTrigger.create({
+        start: 0,
+        end: "max",
+        onUpdate: (self) => {
+          const nextScrolled = self.scroll() > 100;
+          if (nextScrolled !== wasScrolled) {
+            wasScrolled = nextScrolled;
+            setScrolled(nextScrolled);
+          }
+
+          if (progressRef.current) {
+            gsap.set(progressRef.current, { scaleX: self.progress });
+          }
+        },
+      }),
+    );
+
+    NAV_ITEMS.forEach((item) => {
+      const section = document.getElementById(item.id);
+      if (!section) return;
+
+      triggers.push(
+        ScrollTrigger.create({
+          trigger: section,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => setActiveSection(item.id),
+          onEnterBack: () => setActiveSection(item.id),
+        }),
+      );
+    });
+
+    return () => triggers.forEach((trigger) => trigger.kill());
   }, []);
 
   useEffect(() => {
@@ -38,7 +78,14 @@ export default function BrutalHeader() {
   const scrollTo = (id) => {
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (window.lenis && !prefersReducedMotion()) {
+        window.lenis.scrollTo(el, { offset: -72, duration: 1.05 });
+      } else {
+        el.scrollIntoView({
+          behavior: prefersReducedMotion() ? "auto" : "smooth",
+          block: "start",
+        });
+      }
       setIsOpen(false);
     }
   };
@@ -46,6 +93,7 @@ export default function BrutalHeader() {
   return (
     <>
       <header
+        ref={headerRef}
         className={`brutal-header ${scrolled ? "brutal-header--scrolled" : ""}`}
         role="banner"
       >
@@ -71,7 +119,10 @@ export default function BrutalHeader() {
                 <li key={item.id} className="brutal-header__nav-item">
                   <button
                     onClick={() => scrollTo(item.id)}
-                    className="brutal-header__nav-link"
+                    className={`brutal-header__nav-link ${activeSection === item.id ? "brutal-header__nav-link--active" : ""}`}
+                    aria-current={
+                      activeSection === item.id ? "location" : undefined
+                    }
                   >
                     {item.label}
                   </button>
@@ -97,6 +148,9 @@ export default function BrutalHeader() {
             <span className="brutal-header__toggle-bar" />
           </button>
         </div>
+        <span className="brutal-header__progress" aria-hidden="true">
+          <span ref={progressRef} />
+        </span>
       </header>
 
       {/* Mobile overlay */}
@@ -113,9 +167,7 @@ export default function BrutalHeader() {
                 className="brutal-mobile__link"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
-                <span className="brutal-mobile__link-text">
-                  {item.label}
-                </span>
+                <span className="brutal-mobile__link-text">{item.label}</span>
               </button>
             ))}
           </nav>
